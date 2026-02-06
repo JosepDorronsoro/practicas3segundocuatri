@@ -31,9 +31,8 @@ def exp_pdf(
         >>> exp_pdf(np.array([-1.0, 0.0, 1.0]), 1.0)
         array([0.        , 1.        , 0.36787944])
     """
-    # [TODO]
 
-    return 
+    return lam * np.exp(-lam*x)
 
 
 def exp_cdf(
@@ -59,10 +58,8 @@ def exp_cdf(
         >>> exp_cdf(np.array([-1.0, 0.0, 1.0]), 1.0)
         array([0.        , 0.        , 0.63212056])
     """
-    
-    # [TODO]
 
-    pass 
+    return 1 - np.exp(-lam*x)
 
 
 def exp_inv(
@@ -87,10 +84,8 @@ def exp_inv(
         >>> np.allclose(exp_cdf(exp_inv(0.3, 1.5), 1.5), 0.3)
         True
     """
-    
-    # [TODO]
 
-    pass 
+    return (-1/lam) * np.log(p) 
 
 
 if __name__ == "__main__":
