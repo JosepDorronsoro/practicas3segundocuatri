@@ -25,14 +25,23 @@ def exp_pdf(
 
     Examples:
         >>> exp_pdf(0.0, 2.0)
-        2.0
+        array(2.)
+        
         >>> exp_pdf(1.0, 2.0)
-        0.2706705664732254
-        >>> exp_pdf(np.array([-1.0, 0.0, 1.0]), 1.0)
-        array([0.        , 1.        , 0.36787944])
+        array(0.27067057)
+        
+        >>> exp_pdf(-1.0, 2.0)
+        array(0.)
+        
+        >>> exp_pdf(np.array([-1.0, 0.0, 1.0]), 2.0)
+        array([0.        , 2.        , 0.27067057])
     """
-
-    return lam * np.exp(-lam*x)
+    if lam <= 0:
+        raise ValueError("Lambda must be positive.")
+        
+    x = np.asarray(x)
+    
+    pass
 
 
 def exp_cdf(
@@ -52,14 +61,24 @@ def exp_cdf(
 
     Examples:
         >>> exp_cdf(0.0, 2.0)
-        0.0
+        array(0.)
+        
         >>> exp_cdf(1.0, 2.0)
-        0.8646647167633873
-        >>> exp_cdf(np.array([-1.0, 0.0, 1.0]), 1.0)
+        array(0.86466472)
+        
+        >>> exp_cdf(-1.0, 2.0)
+        array(0.)
+
+        >>> exp_cdf([-1.0, 0.0, 1.0], 1.0)
         array([0.        , 0.        , 0.63212056])
     """
-
-    return 1 - np.exp(-lam*x)
+    if lam <= 0:
+        raise ValueError("Lambda must be positive.")
+    
+    x = np.asarray(x)
+    
+    # [TODO]   # Hint: Use np.where
+    pass
 
 
 def exp_inv(
@@ -77,16 +96,28 @@ def exp_inv(
         Quantile corresponding to probability `u`.
 
     Examples:
+        
         >>> exp_inv(0.5, 2.0)
-        0.34657359037935253
-        >>> exp_inv(np.array([0.25, 0.5]), 1.0)
+        np.float64(0.34657359027997264)
+
+        >>> exp_inv([0.25, 0.5], 1.0)
         array([0.28768207, 0.69314718])
-        >>> np.allclose(exp_cdf(exp_inv(0.3, 1.5), 1.5), 0.3)
+        
+        >>> np.allclose(exp_cdf(exp_inv(0.3, 1.5), 1.5), 0.3, rtol=1e-14)
         True
     """
 
-    return (-1/lam) * np.log(p) 
-
+    if lam <= 0:
+        raise ValueError("Lambda must be positive.")
+    
+    p = np.asarray(p)
+    
+    if np.any(p < 0) or np.any(p > 1):
+        raise ValueError("p must be in the range [0, 1].")
+    
+    # [TODO]   # Hint: No need to use np.where!
+    pass
+ 
 
 if __name__ == "__main__":
     import doctest
