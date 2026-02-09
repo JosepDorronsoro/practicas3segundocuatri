@@ -38,16 +38,18 @@ def exp_pdf(
     """
     if lam <= 0:
         raise ValueError("Lambda must be positive.")
-        
+    
     x = np.asarray(x)
     
-    pass
-
+    # [TODO]   # Hint: Use np.where
+    
+    return np.where(x >= 0, lam*np.exp(-lam*x), 0)
 
 def exp_cdf(
         x: Union[float, np.ndarray], 
         lam: float
     ) -> Union[float, np.ndarray]:
+    
     """
     Exponential cumulative distribution function.
 
@@ -78,7 +80,7 @@ def exp_cdf(
     x = np.asarray(x)
     
     # [TODO]   # Hint: Use np.where
-    pass
+    return np.where(x>=0, 1-np.exp(-lam*x), 0)
 
 
 def exp_inv(
@@ -98,7 +100,7 @@ def exp_inv(
     Examples:
         
         >>> exp_inv(0.5, 2.0)
-        np.float64(0.34657359027997264)
+        0.34657359027997264
 
         >>> exp_inv([0.25, 0.5], 1.0)
         array([0.28768207, 0.69314718])
@@ -116,7 +118,7 @@ def exp_inv(
         raise ValueError("p must be in the range [0, 1].")
     
     # [TODO]   # Hint: No need to use np.where!
-    pass
+    return (-1/lam)*np.log(1-p)
  
 
 if __name__ == "__main__":
