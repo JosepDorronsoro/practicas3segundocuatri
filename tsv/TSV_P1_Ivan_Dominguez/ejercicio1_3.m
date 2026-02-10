@@ -1,0 +1,117 @@
+% Ejercicio 3 
+
+clear all;
+close all;
+clc;
+
+% Se pretende tener los 3 formatos 
+% posibles de cada imagen en una figura. 
+
+% - - - - - Imagen 1 - - - - - %
+
+% Primero la cargamos:
+
+[ima1_true, map1_true] = imread("peppers.png");
+            % empty
+
+% Su formato es HxWxC. 
+
+% Primero, querremos pasarla
+% a imagen indexada. Para ello, usamos la función 
+% rgb2ind, que recibe como parámetros la imagen y 
+% el número de colores representativo. Aumentar tal
+% número nos permitirá quedarnos con un mayor número
+% de colores. 
+
+[ima1_indexed, map1_indexed] = rgb2ind(ima1_true, 256);
+
+% Y ahora la pasaremos a true-bw. Para ello usaremos 
+% la función rgb2gray, que recibe como parámetros la 
+% imagen o el mapa de color:
+
+ima1_bw = rgb2gray(ima1_true);
+
+% También podemos obtener la versión indexada con esta 
+% misma función de una manera muy simple. Solo tenemos 
+% que pasarle el mapa de color a la función. 
+
+map1_bw = rgb2gray(map1_indexed);
+
+% Y ahora podemos visualizarlas todas en una sola figura:
+
+figure;
+subplot(2, 2, 1);
+imshow(ima1_true);
+title('Original Image');
+subplot(2, 2, 2);
+imshow(ima1_indexed, map1_indexed);
+title('Indexed image with 256 colors')
+subplot(2, 2, 3);
+imshow(ima1_bw);
+title('True-BW image')
+subplot(2, 2, 4);
+imshow(ima1_indexed, map1_bw);
+title('True-BW indexed image with 256 bw-colors')
+
+% - - - - - Imagen 2 - - - - - %
+
+[ima2_bw, map2_bw] = imread("cameraman.tif");
+
+% Esta es una imagen true-bw, por lo que seguirá 
+% siendo blanca y negra después de todo. Pero 
+% podemos pasarla a RGB en cualquier caso:
+
+ima2_true (:,:,1)= ima2_bw; 
+ima2_true (:,:,2)= ima2_bw; 
+ima2_true (:,:,3)= ima2_bw;
+
+% También podemos pasarla a su formato indexado
+% con la función gray2ind:
+
+[ima2_indexed, map2_indexed] = gray2ind(ima2_bw, 256);
+
+% de nuevo podemos jugar con el número de colores 
+% que queremos que tenga la imagen. 
+
+% Y ahora las representamos todas en una sola figura:
+
+figure;
+subplot(3, 1, 1);
+imshow(ima2_bw);
+title('Original Image (true-bw)');
+subplot(3, 1, 2);
+imshow(ima2_indexed, map2_indexed);
+title('Indexed image with 256 colors')
+subplot(3, 1, 3);
+imshow(ima2_true);
+title('True-color image (3 channels, 1 color)')
+
+% - - - - - Imagen 3 - - - - - %
+
+[ima3_indexed, map3_indexed] = imread("corn.tif");
+
+% Esta imagen viene indexada por defecto. Entonces 
+% habrá que pasarla a true-color y a true-bw
+
+% Primero a true-color. Para ello, usaremos la función
+% ind2rgb:
+
+ima3_true = ind2rgb(ima3_indexed, map3_indexed); 
+
+% Y ahora a true-bw. Para ello, usaremos la función 
+% ind2gray:
+
+ima3_bw = ind2gray(ima3_indexed, map3_indexed); 
+
+% Ahora podemos representarlas todas en una figura:
+
+figure;
+subplot(3, 1, 1);
+imshow(ima3_indexed, map3_indexed);
+title('Indexed image (original)')
+subplot(3, 1, 2); 
+imshow(ima3_true)
+title('True-color image, RGB');
+subplot(3, 1, 3); 
+imshow(ima3_bw);
+title('True-BW image, not indexed');
