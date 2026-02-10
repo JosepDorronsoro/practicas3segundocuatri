@@ -23,7 +23,7 @@ clc;
 % número nos permitirá quedarnos con un mayor número
 % de colores. 
 
-[ima1_indexed, map1_indexed] = rgb2ind(ima1_true, 2^4);
+[ima1_indexed, map1_indexed] = rgb2ind(ima1_true, 256);
 
 % Y ahora la pasaremos a true-bw. Para ello usaremos 
 % la función rgb2gray, que recibe como parámetros la 
@@ -45,13 +45,13 @@ imshow(ima1_true);
 title('Original Image');
 subplot(2, 2, 2);
 imshow(ima1_indexed, map1_indexed);
-title('Indexed image with 2^4 colors')
+title('Indexed image with 256 colors')
 subplot(2, 2, 3);
 imshow(ima1_bw);
 title('True-BW image')
 subplot(2, 2, 4);
 imshow(ima1_indexed, map1_bw);
-title('True-BW indexed image with 2^4 bw-colors')
+title('True-BW indexed image with 256 bw-colors')
 
 % - - - - - Imagen 2 - - - - - %
 
@@ -68,7 +68,7 @@ ima2_true (:,:,3)= ima2_bw;
 % También podemos pasarla a su formato indexado
 % con la función gray2ind:
 
-[ima2_indexed, map2_indexed] = gray2ind(ima2_bw, 2^4);
+[ima2_indexed, map2_indexed] = gray2ind(ima2_bw, 256);
 
 % de nuevo podemos jugar con el número de colores 
 % que queremos que tenga la imagen. 
@@ -81,7 +81,7 @@ imshow(ima2_bw);
 title('Original Image (true-bw)');
 subplot(3, 1, 2);
 imshow(ima2_indexed, map2_indexed);
-title('Indexed image with 2^4 colors')
+title('Indexed image with 256 colors')
 subplot(3, 1, 3);
 imshow(ima2_true);
 title('True-color image (3 channels, 1 color)')
