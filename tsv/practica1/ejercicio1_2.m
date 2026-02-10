@@ -5,9 +5,7 @@ close all;
 clc;
 
 [ima1, map1] = imread("peppers.png");
-
 [ima2, map2] = imread("cameraman.tif");
-
 [ima3, map3] = imread("corn.tif");
 
 % rango minimo-maximo
@@ -17,7 +15,7 @@ subplot(2,3,1);
 min_ima1=min(ima1(:));
 max_ima1= max(ima1(:));
 imshow(ima1, [min_ima1, max_ima1]);
-colorbar;
+colorbar; 
 
 subplot(2,3,2);
 min_ima2=min(ima2(:));
