@@ -2,6 +2,9 @@
 
 % definimos los tonos (frecuencias) del cumpleaños feliz, 
 % según su partitura real
+
+fs = 44100;
+
 f0_hb=[262 262 294 262 349 330 262 262 294 262 392 349 262 262 523 440 349 330 294 466 466 440 349 392 349];
 
 % y también sus duraciones reales:
