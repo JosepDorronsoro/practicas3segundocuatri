@@ -1,6 +1,10 @@
 % Generamos una señal discreta de 5001 muestras 
 % formada por la suma de los tres tonos:
 
+clear all;
+close all;
+clc;
+
 % Calculamos cada tono por separado:
 
 n = 0:5000;
@@ -51,17 +55,72 @@ title('Poder espectral de la señal completa.')
 xlabel('Frecuencia normalizada (/ \pi)');
 ylabel('Poder espectral (dB)');
 
-% Veamos la señal correspondiente a esta entrada:
+% - - - Señal de salida del filtro correspondiente - - - %
 
-b = [1 -0,5];
+% En primer lugar, obtenemos la respuesta como la convolución
+% de la señal respuesta al impulso una delta:
+
+b = [1 -0.5];
 a = [1 -0.9];
 
-out = filter(b, a, x);
+h = impz(b, a, 200);
+
+y_1 = conv(x, h);
+y_1 = y_1(1:length(x));
+
+% Graficamos la señal resultante de la convolución
+
+figure;
+plot(1:200, y_1(1:200));
+title('Salida de la convolución con el impulso');
+xlabel('Muestras');
+ylabel('Amplitud');
+
+% Podemos hacer lo mismo con la ecuación en diferencias 
+% y sus correspondientes coeficientes de Fourier:
+
+y_2 = filter(b, a, x);
 
 % Graficamos la señal filtrada
 figure;
-plot(1:200, out(1:200));
-title('Salida filtrada de la señal x[n]');
+plot(1:200, y_2(1:200));
+title('Salida filtrada con los coeficientes de Fourier');
 xlabel('Muestras');
 ylabel('Amplitud');
+
+
+% Por último, graficamos en una sola figura: 
+
+% 1. La potencia espectral de la señal
+% 2. La respuesta en frecuencia del sistema
+% 3. La potencia espectral de la salida
+
+% Primero calculamos la respuesta en frecuencia del sistema
+% y la potencia espectral de la salida:
+
+[h, w] = freqz(b, a, 512);
+modulo = 20*log10(abs(h));
+frecuencia = w / pi;
+
+[Yxx, f_y] = pwelch(y_1);
+yxx = 10*log10(Yxx); % para potencia usamos 10*log
+f_y = f_y / pi; % normalizamos la frecuencia
+
+% Y ya dibujamos:
+
+figure;
+subplot(3, 1, 1);
+plot(f, pxx);
+xlabel('Frecuencia normalizada (/ \pi)');
+ylabel('Poder espectral (dB)');
+title('Poder espectral de la señal de entrada');
+subplot(3, 1, 2);
+plot(frecuencia, -modulo)
+ylabel('dB')
+subplot(3, 1, 3);
+plot(f_y, yxx);
+xlabel('Frecuencia normalizada (/ \pi)');
+ylabel('Poder espectral (dB)');
+title('Poder espectral de la señal de salida');
+
 
