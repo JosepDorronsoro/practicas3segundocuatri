@@ -1,4 +1,4 @@
-% Ejercicio 1
+% Ejercicio 2
 
 clear all;
 close all;
@@ -72,12 +72,19 @@ mesh(fx, fy, F3);
 figure;
 mesh(fx, fy, F4);
 
-% Representación por imagen:
+% Representación en 2D de la imagen:
 
-F1=log(1+abs(F1));
 figure; 
-imshow(F1,[min(min(F1)) max(max(F1))],'InitialMagnification',100);
+imshow(log(1+abs(F1)),[]);
 
-F2=log(1+abs(F2));
+
 figure; 
-imshow(F2,[min(min(F1)) max(max(F2))],'InitialMagnification',100);
+imshow(log(1+abs(F2)),[]);
+
+
+figure; 
+imshow(log(1+abs(F3)),[]);
+
+
+figure; 
+imshow(log(1+abs(F4)),[]);
