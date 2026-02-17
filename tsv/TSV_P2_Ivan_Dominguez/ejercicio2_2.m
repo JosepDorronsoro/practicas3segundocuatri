@@ -49,7 +49,6 @@ F4=fftshift(fft2(f4));
 image_w = length(x);
 image_h = length(y);
 
-
 fx=-image_w/2:image_w/2; fx=fx(1:end-1);
 fy=-image_h/2:image_h/2; fy=fy(1:end-1);
 
