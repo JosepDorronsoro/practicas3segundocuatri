@@ -5,7 +5,6 @@ Created on Thu Feb  5 16:46:22 2026
 @author: Alberto Suárez <alberto.suarez@uam.es>
 """
 
-
 import numpy as np
 from typing import Union
 from numpy.typing import ArrayLike
@@ -15,6 +14,7 @@ def gaussian_pdf(
     mean: float = 0.0,
     stdev: float = 1.0,
 ) -> Union[float, ArrayLike]:
+    
     """Evaluates the probability density function of a Gaussian distribution.
 
     Args:
@@ -53,7 +53,6 @@ def gaussian_pdf(
     x  = np.asarray(x)
     
     return (1/np.sqrt(2 * np.pi * stdev**2)) * np.exp(-(x-mean)**2 / 2*stdev**2)
-
 
 
 def multivariate_gaussian_pdf(
@@ -107,7 +106,6 @@ def multivariate_gaussian_pdf(
         
     """
    
-  
     x = np.asarray(x)
     mean_vector = np.asarray(mean_vector)
     covariance_matrix = np.asarray(covariance_matrix)
@@ -119,7 +117,7 @@ def multivariate_gaussian_pdf(
         raise ValueError(
             "The dimensions of mean and covariance matrix do not match."
         )
-  
+    
     # Ensure x is an array of dimension (N, D) 
     if x.ndim == 0:
         if D == 1:
@@ -141,11 +139,25 @@ def multivariate_gaussian_pdf(
         raise ValueError("The dimensions of x do not match.")
   
     eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
-  
-    # [TODO: Complete code]
     
-    pass  
+    det_sigma = np.prod(eigenvalues)
+    
+    parte1 = 1 / (np.sqrt((2 * np.pi)**D * det_sigma))
+
+    vector_centrado = x - mean_vector
+    
+    sol = np.linalg.solve(covariance_matrix, vector_centrado.T)
+
+    exponente = np.sum(vector_centrado * sol.T, axis=1)
+    
+    parte3 = np.exp(-0.5 * exponente)
+    
+    res = parte1 * parte3
+
+    return res
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+    
+
