@@ -34,19 +34,27 @@ bar(binLocations, counts);
 % mantendremos s_a y s_b y disminuiremos el 
 % rango [b, a]
 
-a=256-90;b=256-70;s_a=150;s_b=180;
+% usaremos a=s_a, b=s_b, s_a=a, s_b=b
+% para 'reconstruir' la imagen
+a=30;b=220;s_a=80;s_b=160; 
 ima_contrast_2=modificarContraste(ima_contrast, a, b, s_a, s_b);
 
 figure;
-subplot(2, 2, 1);
+subplot(2, 3, 1);
 imshow(ima);
 title('Skin_gray_bc_560.tif');
-subplot(2, 2, 2);
-imshow(ima_contrast_2);
+subplot(2, 3, 2);
+imshow(ima_contrast);
 title('cambio de contraste de Skin_gray_bc_560.tif')
-subplot(2, 2, 3);
+subplot(2, 3, 3);
+imshow(ima_contrast_2)
+title('rehacemos Skin_gray_bc_560.tif')
+subplot(2, 3, 4);
 [counts, binLocations]=imhist(ima);
 bar(binLocations, counts);
-subplot(2, 2, 4);
+subplot(2, 3, 5);
+[counts, binLocations]=imhist(ima_contrast);
+bar(binLocations, counts);
+subplot(2, 3, 6);
 [counts, binLocations]=imhist(ima_contrast_2);
 bar(binLocations, counts);
