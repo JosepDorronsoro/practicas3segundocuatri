@@ -22,13 +22,22 @@ F1 = fftshift(fft2(f1));
 
 % definimos el filtro
 
-fcorte_x = 50; fcorte_y = 50; % jugar con la frecuencia de corte
+fcorte_x = 30; fcorte_y = 30; % jugar con la frecuencia de corte
 
 fc_x=fcorte_x*v1; fc_y=fcorte_y*v2;
 f0_x=0.5+v1; f0_y=0.5+v2;
 fpb=(N>(f0_x-fc_x) & N<(f0_x+fc_x)) & (M>(f0_y-fc_y) & M<(f0_y+fc_y));
 fpa=~fpb;
 fpb=1*double(fpb); fpa=1*double(fpa);
+
+figure;
+subplot(1, 2, 1);
+imshow(log(1+abs(fpa)), []);
+title('fpa');
+subplot(1, 2, 2);
+imshow(log(1+abs(fpb)), []);
+title('fpb');
+
 
 % Filtramos y hacemos la FT inversa:
 
