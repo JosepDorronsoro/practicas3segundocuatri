@@ -7,8 +7,8 @@ clc;
 % La función freqz devuelve las respuestas en frecuencia y 
 % angulares de un filtro digital concreto. 
 
-b = [1 -0.9];
-a = [1 -0.5];
+b = [1 -0.9]; % numerador
+a = [1 -0.5]; % denominador 
 
 % Es importante no equivocarse con el orden de a y b.
 
