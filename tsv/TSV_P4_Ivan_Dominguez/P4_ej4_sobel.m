@@ -18,7 +18,7 @@ s1 = (1/8) * s1_aux;
 
 s2_aux = ones(3,3);
 s2_aux(:,1)=[1 2 1]; s2_aux(:,2)=[0 0 0]; s2_aux(:,3)=[-1 -2 -1];
-s2 = (1/8) * s1_aux;
+s2 = (1/8) * s2_aux;
 
 % calculamos las imagenes de borde:
 
