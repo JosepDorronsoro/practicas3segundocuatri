@@ -16,42 +16,44 @@ b=[1 0 1 0 1]; % denominador
 x=[1, zeros(1, 99)];
 h_diff=filter(b, a, x);
 
-% 2. Transformada inversa:
+% 2. Transformada inversa con residuez (lo que se pide):
 
-% numerador:
-
-hn1=[1 -exp(pi/3*1i)];
-hn2=[1 -exp(2*pi/3*1i)];
-hn3=[1 -exp(-pi/3*1i)];
-hn4=[1 -exp(-2*pi/3*1i)];
-
-% denominador:
-
-hd1=[1 -0.95*exp(pi/3*1i)];
-hd2=[1 -0.95*exp(2*pi/3*1i)];
-hd3=[1 -0.95*exp(-pi/3*1i)];
-hd4=[1 -0.95*exp(-2*pi/3*1i)];
-
-% recordar usar convolución, no el producto de vectores:
-
-h1=conv(hn1, conv(hn2, conv(hn3, hn4))); % numerador 
-h2=conv(hd1, conv(hd2, conv(hd3, hd4))); % denominador
-
-% obtenemos la transformada H y su frecuencia en radianes:
-[H, w] = freqz(h1, h2, 1024, 'whole'); 
-% si no se usa 'whole', perdemos exactitud, pues no se 
-% muestrea en frecuencia. 
-
-% y ahora obtenemos su inversa:
-h_ifft=real(ifft(H));
+[r, p, k] = residuez(b, a);
+n=0:99;
+h_res = sum(r .* p.^n) + (n==0)*k; 
 
 % visualizamos
 figure;
 subplot(2, 1, 1);
 stem(1:100, h_diff);
-title('h[n] - respuesta al impulso \delta[n]');
-xlabel('x[n]'); ylabel('h[n]');
+title('h[n] respuesta al impulso \delta[n] usando filter');
+xlabel('n'); ylabel('h[n]');
 subplot(2, 1, 2);
-stem(1:100, h_ifft(1:100));
-title('h[n] - inversa de H(Z)');
-xlabel('x[n]'); ylabel('h[n]');
+stem(n, h_res);
+title('h[n] construida con residuos');
+xlabel('n'); ylabel('h[n]');
+
+% y ahora solo quedaría filtar la señal con filter y conv:
+
+% filter:
+
+% cargamos la señal ruidosa
+load ecg_n1.mat
+% definimos el eje temporal en que se mueve:
+t=0:1/300:(3600/300)-(1/300);
+%filtramos la señal:
+y = filter(b, a, ecg_n1);
+
+% conv: 
+
+% es trivial ver que y[n]=x[n]*h[n]:
+
+y_conv = conv(ecg_n1, h_res);
+
+figure; 
+subplot(2, 1, 1); plot(t, y);
+title('Señal filtrada mediante filter.')
+xlabel('t(s)'); ylabel('y[n]');
+subplot(2, 1, 2); plot(t, y_conv(1:3600));
+title('Señal filtrada mediante conv.');
+xlabel('t(s)'); ylabel('x[n]*h[n]');
