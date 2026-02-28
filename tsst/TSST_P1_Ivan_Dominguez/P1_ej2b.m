@@ -66,7 +66,7 @@ title('Respuesta del sistema a un impulso. ')
 % Cuya forma seria sum( r / (1 - p z^-1) ) + sum(k). 
 % En nuestro caso:
 
-p = 1 -p;
+p = 1 - p;
 H_res = (r / p) + k;
 
 % Y es fácil ver que efectivamente verifica 
