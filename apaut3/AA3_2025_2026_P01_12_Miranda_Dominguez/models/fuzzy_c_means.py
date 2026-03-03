@@ -10,6 +10,7 @@ def train_fuzzy_c_means(
     max_iters: int = 100,
     epsilon: float = 1e-5
 ) -> Tuple[np.ndarray, np.ndarray]:
+    
     """Implements Fuzzy C-Means in a compact and vectorized way.
 
     Args:
@@ -39,7 +40,8 @@ def train_fuzzy_c_means(
         W_old = W.copy()
         
         # 2. Optimization Step: Calculate Centroids broadcasted
-        # cj = sum(w_ij^m * xi) / sum(w_ij^m)
+        #cj = sum(w_ij^m * xi) / sum(w_ij^m)
+        
        
         
         # 3. Optimization Step: Update Membership (U)

@@ -46,7 +46,7 @@ def train_kmeans(X, n_clusters):
             - centroids (numpy.ndarray): Coordinates of the center of each cluster.
     """
 
-    model = # TODO
+    model = KMeans(n_clusters=n_clusters)
     
     # Model fitting
     model.fit(X)
