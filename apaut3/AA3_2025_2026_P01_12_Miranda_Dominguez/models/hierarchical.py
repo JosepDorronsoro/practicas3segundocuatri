@@ -42,9 +42,7 @@ def plot_hierarchical(animal_names: list, Z: np.ndarray):
     plt.figure(figsize=(30, 15))
     
     # Create the Dendrogram: 
-
     dendrogram(Z, labels=animal_names, leaf_font_size=16)
-    hierarchy.set_link_color_palette(animal_names)
 
     plt.title("Animal Taxonomy: Hierarchical Clustering (Source: UCI Machine Learning)", fontsize=16)
     plt.ylabel("Dissimilarity Distance (Ward)", fontsize=12)
