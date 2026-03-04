@@ -86,10 +86,10 @@ title('señal de salida')
 
 figure;
 subplot(2, 1, 1);
-plot(wx/pi, 10*log(pxx));
+pwelch(x);
 xlabel('Normalized frequency (\times \pi rad/sample)');
 ylabel('Potencia/frecuencia (dB/(rad/sample))');
 subplot(2, 1, 2);
-plot(wy/pi, 10*log(pyy));
+pwelch(y);
 xlabel('Normalized frequency (\times \pi rad/sample)');
 ylabel('Potencia/frecuencia (dB/(rad/sample))');
