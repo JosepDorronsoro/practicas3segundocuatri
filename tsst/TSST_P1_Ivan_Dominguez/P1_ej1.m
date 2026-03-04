@@ -49,3 +49,8 @@ maybe_pz = norm_p * conv(conv(root1_pz, root2_pz), root3_pz);
 maybe_qz = norm_q * conv(conv(root1_qz, root2_qz), root3_qz);
 
 % Pasando por pantalla vemos claramente que son exactamente iguales. 
+
+display(pz);
+display(maybe_pz);
+display(qz);
+display(maybe_qz);
