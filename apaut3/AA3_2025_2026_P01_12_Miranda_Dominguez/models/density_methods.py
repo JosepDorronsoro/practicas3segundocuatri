@@ -13,8 +13,8 @@ def train_dbscan(X, eps=0.5, min_samples=5):
         numpy.ndarray: Cluster labels. Noise points are labeled as -1.
     """
     # DBSCAN is deterministic, so it does not require a random_state
-    db = # TODO: Initialize DBSCAN with the given eps and min_samples parameters
-    labels = # TODO predictions
+    db = DBSCAN(eps=eps, min_samples=min_samples) 
+    labels = db.fit(X)
     return labels
 
 def train_hdbscan(X, min_cluster_size=5):
@@ -31,6 +31,6 @@ def train_hdbscan(X, min_cluster_size=5):
         numpy.ndarray: Cluster labels. Noise points are labeled as -1.
     """
     # Note: Requires scikit-learn >= 1.3.0
-    hdb =# TODO: Initialize HDBSCAN with the given min_cluster_size parameter
-    labels = # TODO predictions
-    return labels
+    hdb = HDBSCAN(min_cluster_size)
+    labels = hdb.fit(X)
+    return labels.labels_

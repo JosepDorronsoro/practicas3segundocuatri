@@ -42,25 +42,29 @@ def train_fuzzy_c_means(
         # 2. Optimization Step: Calculate Centroids broadcasted
         #cj = sum(w_ij^m * xi) / sum(w_ij^m)
         
-        cj = (np.power(W_old, m)).T @ X / np.sum(np.power(W_old, m), axis=0)[:, np.newaxis]
+        W_m = np.power(W_old, m)
+        cj = W_m.T @ X / W_m.sum(axis=0)[:, np.newaxis]
         
         # 3. Optimization Step: Update Membership (U)
         # Calculate distances from all points to all centroids using cdist
     
-        d_ik = cdist(X, cj, metric='euclidean') # + 1e-10 Add small value to avoid division by zero
+        d_ik = cdist(X, cj, metric='euclidean') + 1e-10 # Add small value to avoid division by zero
 
         # Vectorized formula: w_ij = 1 / sum((d_ij/d_ik)^(2/(m-1))) 
-        W = 1 / np.sum((d_ik[:, np.newaxis, :] / d_ik[:, :, np.newaxis]) ** (2 / (m - 1)), axis=2)
+        W = 1 / np.sum(
+            (d_ik[:, :, np.newaxis] / d_ik[:, np.newaxis, :]) ** (2 / (m - 1)),
+            axis=2
+        )
         
         # 4. Stopping criterion
         
         n_iter += 1
         stop_criterion = np.linalg.norm(W_old - W) < epsilon
 
-    
+    W_m = np.power(W, m)
+    cj = W_m.T @ X / W_m.sum(axis=0)[:, np.newaxis]
+ 
     if n_iter == max_iters: 
         warnings.warn("Maximum number of iterations reached.", RuntimeWarning)
 
-    U, centroids = W_old, cj
-
-    return U, centroids
+    return W, cj
