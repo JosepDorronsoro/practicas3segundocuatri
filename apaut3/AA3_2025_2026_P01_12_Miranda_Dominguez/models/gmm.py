@@ -20,7 +20,8 @@ def train_gmm(X, n_components, covariance_type='full'):
             - means (numpy.ndarray): Centers of the Gaussians (equivalent to centroids).
     """
     # Initialize with a fixed random_state for educational reproducibility
-    gmm = # TODO
+    
+    gmm = GaussianMixture(n_components=n_components, covariance_type=covariance_type)
     
     gmm.fit(X)
     

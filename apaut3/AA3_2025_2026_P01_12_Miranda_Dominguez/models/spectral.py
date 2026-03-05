@@ -19,6 +19,6 @@ def train_spectral(X, n_clusters, affinity='nearest_neighbors', n_neighbors=10):
         numpy.ndarray: Cluster labels.
     """
     # TODO: Initialize SpectralClustering with the given parameters 
-    model = # TODO
+    model = SpectralClustering(n_clusters=n_clusters, affinity=affinity, n_neighbors=n_neighbors)# TODO
     labels = model.fit_predict(X)
     return labels
