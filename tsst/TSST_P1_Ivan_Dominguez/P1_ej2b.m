@@ -78,6 +78,10 @@ H_res = (r / p) + k;
 h_res = -0.8*(0.5).^n;
 h_res(1) = h_res(1) + 1.8;
 
+display(r);
+display(p);
+display(k);
+
 figure;
 subplot(2, 1, 1);
 stem(n, h3n);
