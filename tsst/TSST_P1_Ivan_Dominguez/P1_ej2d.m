@@ -33,14 +33,6 @@ subplot(4, 1, 4);
 plot(1:200, x(1:200));
 title('x[n] = x1[n] + x2[n] + x3[n]');
 
-% Ahora calculamos el poder espectral de la señal completa
-% en decibelios:
-
-[Pxx, f] = pwelch(x);
-pxx = 10*log10(Pxx); % para potencia usamos 10*log
-f = f / pi; % normalizamos la frecuencia
-
-
 % Y representamos en una figura una gráfica para las 200
 % primeras muestras de la señal, y el poder espectral de
 % la señal completa:
@@ -50,10 +42,7 @@ subplot(2, 1, 1);
 plot(1:200, x(1:200));
 title('x[n] = x1[n] + x2[n] + x3[n]');
 subplot(2, 1, 2);
-plot(f, pxx);
-title('Poder espectral de la señal completa.')
-xlabel('Frecuencia normalizada (/ \pi)');
-ylabel('Poder espectral (dB)');
+pwelch(x)
 
 % - - - Señal de salida del filtro correspondiente - - - %
 
@@ -110,17 +99,9 @@ f_y = f_y / pi; % normalizamos la frecuencia
 
 figure;
 subplot(3, 1, 1);
-plot(f, pxx);
-xlabel('Frecuencia normalizada (/ \pi)');
-ylabel('Poder espectral (dB)');
-title('Poder espectral de la señal de entrada');
+pwelch(y_1);
 subplot(3, 1, 2);
 plot(frecuencia, -modulo)
 ylabel('dB')
 subplot(3, 1, 3);
-plot(f_y, yxx);
-xlabel('Frecuencia normalizada (/ \pi)');
-ylabel('Poder espectral (dB)');
-title('Poder espectral de la señal de salida');
-
-
+pwelch(y_2)
