@@ -41,19 +41,27 @@ class ConvAutoencoder2D(nn.Module):
     def __init__(self, latent_dim=2): 
         super(ConvAutoencoder2D, self).__init__()
         
-        # TODO: Adjust architecture to ensure the bottleneck is exactly 2D use, Sequenti Conv2D, activations, flatten an d Linear layers to achieve this. The decoder should mirror the encoder.
         self.encoder = nn.Sequential(
             nn.Conv2d(1, 16, kernel_size=3, stride=2, padding=1),
-            # TODO
+            nn.ReLU(),
+            nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1), 
+            nn.ReLU(),
+            nn.Flatten(),
+            nn.Linear(1568, latent_dim)
         )
 
         # TODO: The decoder should mirror the encoder, but in reverse order. Use ConvTranspose2d for upsampling.
         self.decoder_fc = nn.Sequential(
-            nn.Linear(latent_dim, 32 * 7 * 7),
-            # TODO
+            nn.Linear(latent_dim, 1568),
+            nn.ReLU(),
+            nn.Unflatten(1, (32, 7, 7))
         )
+        
         self.decoder_conv = nn.Sequential(
-            # TODO: Mirror the encoder's Conv2D layers with ConvTranspose2D, ensuring the output is (1, 28, 28)
+            nn.ConvTranspose2d(32, 16, kernel_size=3, stride=2, padding=1, output_padding=1), 
+            nn.ReLU(), 
+            nn.ConvTranspose2d(16, 1, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.Sigmoid()
         )
 
     def forward(self, x):
