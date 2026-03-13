@@ -24,7 +24,6 @@ SIFTpoints = detectSIFTFeatures(ima);
 % - los 10 más fuertes
 % - 10 aleatorios
 
-
 figure;
 subplot(2, 2, 1);
 imshow(ima); 
