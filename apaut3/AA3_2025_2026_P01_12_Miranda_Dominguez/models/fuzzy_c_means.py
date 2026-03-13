@@ -42,6 +42,8 @@ def train_fuzzy_c_means(
         # 2. Optimization Step: Calculate Centroids broadcasted
         #cj = sum(w_ij^m * xi) / sum(w_ij^m)
         
+        # It is calculated in two steps:
+        
         W_m = np.power(W_old, m)
         cj = W_m.T @ X / W_m.sum(axis=0)[:, np.newaxis]
         
