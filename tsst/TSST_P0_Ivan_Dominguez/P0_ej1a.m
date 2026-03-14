@@ -1,3 +1,9 @@
+% P0 Ejercicio 1a
+
+clear all;
+close all;
+clc;
+
 % añadimos a la ruta los ficheros de audio de la carpeta
 
 addpath(genpath('audios_P0_TSST'));

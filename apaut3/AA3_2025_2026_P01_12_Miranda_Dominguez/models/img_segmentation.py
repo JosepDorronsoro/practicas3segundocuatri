@@ -37,11 +37,13 @@ def segment_image(image, k=4):
     
     # 2. Train a class method and predict cluster labels for each pixel
     # Using n_init='auto' for speed in this visual demonstration
-    # TODO
-    labels = #TODO.fit_predict(pixel_data)
+    
+    clustering = KMeans(n_init='auto')
+    
+    labels = clustering.fit_predict(pixel_data)
     
     # 3. Retrieve the centroid colors
-    centroids = # TODO
+    centroids = clustering.cluster_centers_
     
     # 4. Replace each pixel with the color of its assigned centroid
     segmented_pixels = centroids[labels]

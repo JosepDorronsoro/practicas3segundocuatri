@@ -19,6 +19,9 @@ def train_hierarchical(X: np.ndarray) -> np.ndarray:
     Returns:
         Z (numpy.ndarray): The linkage matrix resulting from hierarchical clustering.
     """
+    # Scale data to improve clustering quality
+    # scaler = StandardScaler()
+    # X_scaled = scaler.fit_transform(X)
 
     # Apply Ward's method for hierarchical clustering
     # Ward minimizes the sum of squared differences within all clusters
