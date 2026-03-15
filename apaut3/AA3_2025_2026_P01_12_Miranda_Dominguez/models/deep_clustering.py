@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from sklearn.cluster import KMeans
+from sklearn.metrics import adjusted_rand_score
 # Assuming this is a local module, I've renamed the import for consistency
 from visualization.visualize_clustering_comparison import visualize_clustering_comparison
 
@@ -120,6 +121,22 @@ def train_deep_clustering_2d(dataloader, n_clusters=10, epochs=15, lr=0.001):
 # ==========================================
 # Run the training (takes a few minutes depending on hardware)
 labels_pred, embeddings_2d, labels_real, centroids = train_deep_clustering_2d(dataloader, n_clusters=10, epochs=15)
+
+# 4. EVALUACIÓN CON ARI
+print("Calculando el Adjusted Rand Index (ARI)...")
+ari_score = adjusted_rand_score(labels_real, labels_pred)
+
+print(f"Resultado ARI: {ari_score:.4f}")
+
+# Breve interpretación en consola
+if ari_score > 0.8:
+    print("Interpretación: ¡Excelente correspondencia con la realidad!")
+elif ari_score > 0.5:
+    print("Interpretación: Buena correspondencia, los clústeres capturan bastante bien las clases.")
+elif ari_score > 0.2:
+    print("Interpretación: Correspondencia baja. El modelo agrupa algunas cosas bien, pero hay mucha mezcla.")
+else:
+    print("Interpretación: Correspondencia muy pobre, cercano a una agrupación aleatoria.")
 
 # Direct Plot (No PCA required)
 plt.figure(figsize=(12, 8))
