@@ -121,7 +121,7 @@ title(sprintf('SIFT Matlab descriptores (%d puntos %s)\n[%s]',length(selected_po
 
 % Seleccione las mejores points2view(p2w) asociaciones 1-2 
 % 1. obtenga los índices de los scores ordenados de mayor a menor: función sort
-[~,I12]=sort(scores_12, 'descend');
+[~,I12]=sort(scores_12, 'ascend');
 % 2. seleccione los mejores points3view(p2w) índices
 best_i12=I12(1:p2w);
 % 3. use los índices mejores para obtener los índices de los matches en 1 y 2
@@ -132,7 +132,7 @@ selected_pos2_12 = selected_points_2(best_matches_12(:,2));
 
 % Seleccione las mejores points2view(p2w) asociaciones 3-2 
 % 1. obtenga los índices de los scores ordenados de mayor a menor: función sort
-[~,I32]=sort(scores_32, 'descend');
+[~,I32]=sort(scores_32, 'ascend');
 % 2. seleccione los mejores points3view(p2w) índices
 best_i32=I32(1:p2w);
 % 3. use los índices mejores para obtener los índices de los matches en 3 y 2
