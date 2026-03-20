@@ -18,11 +18,10 @@ hb=[f0_hb;d0_hb];
 % y con eso, generaremos la melodía con cada 
 % frecuencia y su duración asociadas:
 
-melodia=[];
+melodia = zeros(length(hb));
 
 for k=1:length(hb) % para cada nota de la melodia
-    nota = genera_tono(hb(1,k),fs, hb(2,k)); % genera nueva nota
-    melodia = [melodia nota]; % añade la nueva nota a la melodia
+    melodia(k) = genera_tono(hb(1,k),fs, hb(2,k)); % añade la nueva nota a la melodia
 end
 
 sound(melodia, fs)
