@@ -45,7 +45,7 @@ bar(binLocations, counts);
 
 % obtenemos la máscara y el umbral
 
-[mascara_otsu, ~] = UmbralizaGlobal(ima);
+[mascara_otsu, ~] = UmbralizaOtsuInter(ima);
 
 % obtenemos la imagen umbralizada
 

@@ -28,9 +28,11 @@ puntos_s = SIFTpoints.selectStrongest(10);
 figure; 
 subplot(1, 2, 1);
 imshow(ima); hold on;
-vl_plotsiftdescriptor_forMatlabSIFTpoints(features_u, points_u); 
+vl_plotsiftdescriptor_forMatlabSIFTpoints(features_u, validPoints_u); 
 title('Points uniform')
 subplot(1, 2, 2);
 imshow(ima); hold on;
-vl_plotsiftdescriptor_forMatlabSIFTpoints(features_s, points_s); 
+vl_plotsiftdescriptor_forMatlabSIFTpoints(features_s, validPoints_s); 
 title('Points strongest')
+
+
