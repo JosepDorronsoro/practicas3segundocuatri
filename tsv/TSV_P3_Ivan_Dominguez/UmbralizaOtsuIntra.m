@@ -12,7 +12,7 @@ for k=0:255
 
     % para varianza intra-clase:
     p1=sum(sum(mascara))/(h*w); p0=1-p1;
-    v0=var(valores_fondo, 1); v1=var(valores_objeto, 1);
+    v0=var(double(valores_fondo), 1); v1=var(double(valores_objeto), 1);
     varianzas(k+1)= (p0*v0+p1*v1); 
 
     % para varianza inter-clase:
