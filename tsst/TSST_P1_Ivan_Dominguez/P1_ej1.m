@@ -15,8 +15,8 @@ pqz = conv(pz, qz);
 
 % Guardamos los factores de normalización de P(z) y Q(z)
 
-norm_p = 2;
-norm_q = 3;
+norm_p = pz(1);
+norm_q = qz(1);
 
 % Normalizamos los polinomios P y Q:
 

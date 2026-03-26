@@ -4,28 +4,35 @@ clear all;
 close all;
 clc;
 
+% Cargamos la imagen 
+
 addpath(genpath('./P5imas&code/plotSIFT/'));
 ima = imread('cameraman.tif');
 
+% Detectamos los puntos con SIFT
+
 SIFTpoints = detectSIFTFeatures(ima); 
+
+% Seleccionamos 10 uniformemente y los 10 más fuertes
 
 puntos_u = SIFTpoints.selectUniform(10, size(ima));
 puntos_s = SIFTpoints.selectStrongest(10);
 
+% Los desdoblamos:
+
 [features_u, validPoints_u] = extractFeatures(ima, puntos_u);
 [features_s, validPoints_s] = extractFeatures(ima, puntos_s);
 
-points_u = validPoints_u;
-points_s = validPoints_s;
+% Y graficamos las rejillas de subventanas. 
 
 figure; 
 subplot(1, 2, 1);
 imshow(ima); hold on;
-h = vl_plotframe_forMatlabSIFTpoints(points_u); 
-set(h, 'Color', 'yellow', 'LineWidth', 2);
+vl_plotsiftdescriptor_forMatlabSIFTpoints(features_u, validPoints_u); 
 title('Points uniform')
 subplot(1, 2, 2);
 imshow(ima); hold on;
-h = vl_plotframe_forMatlabSIFTpoints(points_s); 
-set(h, 'Color', 'yellow', 'LineWidth', 2);
+vl_plotsiftdescriptor_forMatlabSIFTpoints(features_s, validPoints_s); 
 title('Points strongest')
+
+
