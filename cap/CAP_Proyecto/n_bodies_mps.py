@@ -4,20 +4,21 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # --- 1. CONFIGURACIÓN DEL DISPOSITIVO ---
-# Detectar si MPS (Metal Performance Shaders) está disponible
+
 if torch.backends.mps.is_available() and torch.backends.mps.is_built():
     device = torch.device("mps")
-    print("✓ Ejecutando en GPU de Apple usando MPS (Metal)")
+    print("Ejecutando en MPS")
 else:
     device = torch.device("cpu")
-    print("✗ MPS no disponible. Usando CPU (será lento)")
+    print("MPS no disponible.")
 
 # --- 2. PARÁMETROS FÍSICOS ---
-N_BODIES = 4       # ¡Ahora podemos manejar muchos más cuerpos gracias a la GPU!
-G = 0.01               # Constante gravitacional
-SOFTENING = 0.05      # Suavizado para evitar colisiones infinitas
-DT = 0.01             # Paso de tiempo
-DTYPE = torch.float32 # Usamos float32, que es lo nativo y más rápido en MPS
+
+N_BODIES = 100       
+G = 0.01              
+SOFTENING = 0.05      
+DT = 0.01             
+DTYPE = torch.float32 
 
 # --- 3. INICIALIZACIÓN DE DATOS DIRECTAMENTE EN EL DISPOSITIVO (MPS) ---
 torch.manual_seed(42)
@@ -25,16 +26,13 @@ torch.manual_seed(42)
 # Crear datos iniciales en CPU (NumPy es más fácil para inicializar formas)
 pos_np = np.random.randn(N_BODIES, 3).astype(np.float32) * 2.0
 vel_np = np.random.randn(N_BODIES, 3).astype(np.float32) * 0
-# vel_np = np.zeros((3, 3)).astype(np.float32)
 mass_np = (np.random.rand(N_BODIES).astype(np.float32) * 10.0 + 1.0) # Masas 1-11
 
 # Mover datos a la GPU (MPS)
-# Las posiciones y velocidades deben tener "requires_grad=False" ya que no estamos entrenando una IA.
 pos = torch.from_numpy(pos_np).to(device)
 vel = torch.from_numpy(vel_np).to(device)
 mass = torch.from_numpy(mass_np).to(device)
 
-# Pre-asignar tensor de aceleración en MPS para no crear memoria nueva en cada paso
 acc = torch.zeros((N_BODIES, 3), device=device, dtype=DTYPE)
 
 # --- 4. NÚCLEO FÍSICO VECTORIZADO (PyTorch/MPS) ---
@@ -42,7 +40,7 @@ def compute_accelerations_mps(pos, mass, softening):
     """Calcula aceleraciones de forma matricial (vectorizada) en MPS"""
     N = pos.shape[0]
     
-    # Truco de Broadcasting para evitar bucles for:
+    # Broadcasting para evitar bucles for:
     # pos_i shape: (N, 1, 3) - Cada fila 'i' es una posición
     # pos_j shape: (1, N, 3) - Cada columna 'j' es una posición
     pos_i = pos.view(N, 1, 3)
@@ -62,9 +60,7 @@ def compute_accelerations_mps(pos, mass, softening):
     dist_sq_softened = dist_sq + softening**2
     inv_dist3 = torch.rsqrt(dist_sq_softened)**3 # rsqrt es rápido: 1/sqrt(x)
     
-    # Calcular la fuerza neta escalada. 
-    # mass_j shape es (N). Al multiplicar por inv_dist3 (N,N), se hace broadcasting.
-    # El resultado 'forces_scaled' es (N, N)
+    # Calcular la aceleración.
     forces_scaled = G * mass * inv_dist3
     
     # Aplicar la dirección de la fuerza.
@@ -92,9 +88,6 @@ def symplectic_euler_step_mps(pos, vel, mass, dt, softening):
     pos.add_(vel * dt)
 
 # --- 5. VISUALIZACIÓN DINÁMICA (Matplotlib en CPU) ---
-# OJO: Matplotlib no corre en MPS. Tenemos que bajar los datos de la GPU
-# a la CPU para cada frame, lo cual es un cuello de botella, pero necesario
-# para usar Matplotlib.
 
 fig = plt.figure(figsize=(10, 10), facecolor='black')
 ax = fig.add_subplot(111, projection='3d')
@@ -107,7 +100,6 @@ mass_cpu = mass.cpu().numpy()
 scatter = ax.scatter(pos_cpu[:, 0], pos_cpu[:, 1], pos_cpu[:, 2], 
                      s=mass_cpu*3, c='cyan', edgecolors='white', linewidths=0.2, alpha=0.8)
 
-# Límites del mapa (puedes ajustarlos o hacerlos dinámicos)
 LIMIT = 6
 ax.set_xlim(-LIMIT, LIMIT)
 ax.set_ylim(-LIMIT, LIMIT)
