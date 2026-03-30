@@ -4,12 +4,12 @@ import matplotlib.animation as animation
 from numba import njit
 
 # --- 1. CONFIGURACIÓN FÍSICA Y PARÁMETROS ---
-N_BODIES = 100         # Número de cuerpos
+N_BODIES = 100        # Número de cuerpos
 G = 1.0               # Constante gravitacional (simplificada)
 SOFTENING = 0.1       # Parámetro de suavizado para evitar colisiones infinitas
 DT = 0.01             # Paso de tiempo (Delta t)
 
-# --- 2. NÚCLEO MATEMÁTICO (Preparado para CUDA) ---
+# --- 2. NÚCLEO MATEMÁTICO ---
 # Usamos njit para compilar en CPU ahora. 
 # En el futuro, esto se convertirá en un @cuda.jit
 @njit
@@ -67,9 +67,15 @@ def symplectic_euler_step(pos, vel, acc, mass, dt):
 # Generamos posiciones iniciales aleatorias en una esfera y velocidades tangenciales
 np.random.seed(42)
 pos = np.random.randn(N_BODIES, 3) * 2.0
-vel = np.random.randn(N_BODIES, 3) * 0.5
-mass = np.random.rand(N_BODIES) * 10.0 + 1.0 # Masas entre 1 y 11
+vel = np.random.randn(N_BODIES, 3) * 0
+mass = np.random.rand(N_BODIES) * 10.0 + 1.0
 acc = np.zeros((N_BODIES, 3))
+
+# --- 3.5 LLAMADA EN FRÍO (WARM-UP) ---
+
+# Pasamos los arrays reales, pero con dt=0.0 para que nada se mueva.
+# Como compute_accelerations está dentro de esta función, Numba compilará AMBAS.
+symplectic_euler_step(pos, vel, acc, mass, 0.0)
 
 # --- 4. VISUALIZACIÓN DINÁMICA ---
 fig = plt.figure(figsize=(8, 8), facecolor='black')
