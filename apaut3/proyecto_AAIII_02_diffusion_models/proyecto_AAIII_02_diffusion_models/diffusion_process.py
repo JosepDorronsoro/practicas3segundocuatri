@@ -15,7 +15,6 @@ import torch
 from torch import Tensor
 
 
-
 def euler_maruyama_integrator(
     x_0: Tensor,
     t_0: float,
@@ -25,6 +24,7 @@ def euler_maruyama_integrator(
     diffusion_coefficient: Callable[float],
     seed: Union[int, None] = None
 ) -> Tensor:
+    
     """Euler-Maruyama integrator (approximate)
 
      Args:
