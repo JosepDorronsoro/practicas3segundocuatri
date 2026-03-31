@@ -1,0 +1,30 @@
+services:
+  spark-master:
+    image: ubuntu:22.04
+    container_name: spark-master
+    hostname: spark-master
+    command: /bin/bash -c "apt-get update -qq && apt-get install -y -qq python3 && tail -f /dev/null"
+    ports:
+      - "8080:8080"
+    networks:
+      - spark-net
+
+  spark-worker-1:
+    image: ubuntu:22.04
+    container_name: spark-worker-1
+    hostname: spark-worker-1
+    command: /bin/bash -c "apt-get update -qq && apt-get install -y -qq python3 && tail -f /dev/null"
+    networks:
+      - spark-net
+
+  spark-worker-2:
+    image: ubuntu:22.04
+    container_name: spark-worker-2
+    hostname: spark-worker-2
+    command: /bin/bash -c "apt-get update -qq && apt-get install -y -qq python3 && tail -f /dev/null"
+    networks:
+      - spark-net
+
+networks:
+  spark-net:
+    driver: bridge

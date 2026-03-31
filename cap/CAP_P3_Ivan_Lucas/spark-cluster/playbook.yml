@@ -1,0 +1,66 @@
+---
+- name: Instalar y configurar Apache Spark
+  hosts: spark
+  become: yes
+  vars:
+    spark_version: "3.5.1"
+    hadoop_version: "3"
+    spark_home: "/opt/spark"
+    ansible_python_interpreter: /usr/bin/python3.10
+
+  tasks:
+    - name: Instalar dependencias
+      apt:
+        name:
+          - openjdk-11-jdk
+          - wget
+          - curl
+        state: present
+        update_cache: yes
+
+    - name: Descargar Spark
+      get_url:
+        url: "https://archive.apache.org/dist/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz"
+        dest: "/tmp/spark.tgz"
+
+    - name: Extraer Spark
+      unarchive:
+        src: "/tmp/spark.tgz"
+        dest: "/opt/"
+        remote_src: yes
+
+    - name: Crear enlace simbolico
+      file:
+        src: "/opt/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}"
+        dest: "{{ spark_home }}"
+        state: link
+
+    - name: Configurar variables de entorno
+      lineinfile:
+        path: /etc/environment
+        line: "{{ item }}"
+      loop:
+        - 'SPARK_HOME=/opt/spark'
+        - 'PATH=$PATH:/opt/spark/bin'
+
+- name: Arrancar Spark Master
+  hosts: master
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.10
+  tasks:
+    - name: Iniciar master
+      shell: /opt/spark/sbin/start-master.sh
+      environment:
+        JAVA_HOME: /usr/lib/jvm/java-11-openjdk-arm64
+
+- name: Arrancar Spark Workers
+  hosts: workers
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.10
+  tasks:
+    - name: Iniciar worker
+      shell: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
+      environment:
+        JAVA_HOME: /usr/lib/jvm/java-11-openjdk-arm64
