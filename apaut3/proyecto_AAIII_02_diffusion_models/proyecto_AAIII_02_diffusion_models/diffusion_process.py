@@ -22,8 +22,7 @@ def euler_maruyama_integrator(
     n_steps: int,  
     drift_coefficient: Callable[float, float],
     diffusion_coefficient: Callable[float],
-    seed: Union[int, None] = None
-) -> Tensor:
+    seed: Union[int, None] = None ) -> Tensor:
     
     """Euler-Maruyama integrator (approximate)
 
@@ -60,25 +59,35 @@ def euler_maruyama_integrator(
         torch.Size([2, 3, 5, 4, 7])
     """
     
-    # [TO DO: Include short comments to describe operation of the code]
-    
     device = x_0.device
-   
-    times = torch.linspace(t_0, t_end, n_steps + 1, device=device)
-    dt = times[1] - times[0]  
+    # compute N the number of time steps:
+    times = torch.linspace(t_0, t_end, n_steps + 1, device=device) 
+    # Compute Delta T as the difference of two contigous time steps: 
+    dt = times[1] - times[0]   
     
+    # Initialize 
     x_t = torch.tensor(
         np.empty((*np.shape(x_0), len(times))), 
         dtype=torch.float32,
         device=device,
     )
+
+    # size [2, 3, 5, 4, 7]
+        # 2 simultaneous batches 
+        # 3 channels
+        # 5 image height 
+        # 4 image width
+        # 7 temporal steps 
     x_t[..., 0] = x_0
-    
+    # compute noise images with the size of x_t
     z = torch.randn_like(x_t)
     z[..., -1] = 0.0 # No noise injection in the last step
     
+    # n: step, t: time step for the step n 
     for n, t in enumerate(times[:-1]): 
         t = torch.ones(x_0.shape[0], device=device) * t
+        # compute x_{n+1} according to its euler maruyama form
+        # x_{n+1} = x_n + drift * Delta T + diffusion * sqrt{Delta T} * noise_image
         x_t[..., n + 1] = ( 
             x_t[..., n]
             + drift_coefficient(x_t[..., n], t) * dt
@@ -86,9 +95,12 @@ def euler_maruyama_integrator(
               * np.sqrt(np.abs(dt)) 
               * z[..., n]
         )
-        
-    return times, x_t
     
+    # return the times and the 2 images batch for each temporal step    
+    return times, x_t
+
+# ESTO ESTÁ POR EXPLICAR EN CLASE TODAVÍA, NI IDEA DE COMO HACERLO
+
 class DiffussionProcess:
 
     def __init__(
@@ -100,7 +112,6 @@ class DiffussionProcess:
         self.diffusion_coefficient = diffusion_coefficient
      
 
-        
 class GaussianDiffussionProcess(DiffussionProcess):
     """
     
@@ -121,8 +132,8 @@ class GaussianDiffussionProcess(DiffussionProcess):
         >>> print(bm.mu_t(x_0=3.0, t=10.0), bm.sigma_t(t=10.0))
         18.0 4.47213595499958
         
-
     """
+    
     kind = "Gaussian"
     
     def __init__(
@@ -144,19 +155,54 @@ class GaussianDiffussionProcess(DiffussionProcess):
         x_0: torch.Tensor, 
         eps: float = 1.0e-5,
     ):
-        """The loss function for training score-based generative models.
+        """
+        
+        The loss function for training score-based generative models.
 
           Args:
               score_model:  A PyTorch model instance that represents a 
                             time-dependent score-based model.
-          x_0: A mini-batch of training data.    
-          eps: A tolerance value for numerical stability.
+                            
+              x_0: A mini-batch of training data.    
+              
+              eps: A tolerance value for numerical stability.
         """
         
+        # compute the time 
         t = torch.rand(x_0.shape[0], device=x_0.device) * (1.0 - eps) + eps  
         
-        # [TO DO: Complete code]
-
+        # compute the noise image:
+        z = torch.randn_like(x_0)
+        
+        # we need t to be a 4-dimension in order to operate with mu_t and sigma_t
+        # the dimensions will correspond to: [batch_size, x_0.dim() - 1]
+            
+        view_shape = [x_0.shape[0]] + [1] * (x_0.dim() - 1)
+        t_expanded = t.view(*view_shape)
+        
+        # now we can operate over mu and sigma 
+        mu = self.mu_t(x_0, t_expanded)
+        sigma = self.sigma_t(t_expanded)
+        
+        # compute x_t = mu + sigma * z according to the formula given in class
+        x_t = mu + sigma*z
+        
+        # compute the results for the scoring nnet 
+        s = score_model(x_t, t)
+        
+        # now we need to compute the distance between each image of the batch
+        # so we compress this tensor into a 1-dimension array by adding its terms per pixel and channel:
+        dim_to_sum = list(range(1, x_0.dim()))
+        squared_norm = torch.sum( ( (sigma * s) + z) ** 2, dim=dim_to_sum)
+        
+        # now we compute this weights
+        lambda_eval = self.sigma_t(t) ** 2
+        weight = lambda_eval / (self.sigma_t(t) ** 2)
+        
+        # and finally compute the mean
+        loss_per_sample = weight * squared_norm
+        loss = torch.mean(loss_per_sample)
+        
         return loss
 
 

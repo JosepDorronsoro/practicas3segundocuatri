@@ -109,7 +109,6 @@ def simulate_langevin_dynamics_euler_maruyama(
     rng = np.random.default_rng(seed)
     z = rng.standard_normal(np.shape(x_t))
 
-        
     for n, t in enumerate(times[:-1]):
         diffusion_term = diffusion(t)
         x_t[..., n + 1] = (

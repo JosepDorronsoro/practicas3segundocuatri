@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Mar  8 17:26:43 2025
+Created on Sat Mar 8 17:26:43 2025
 
 @author: ALBERTO
+
 """
 
 from numpy.typing import ArrayLike
@@ -50,8 +51,8 @@ def plot_image_evolution(
     n_images: int,
     n_intermediate_steps: ArrayLike,
     figsize: tuple,
-    cmap: Colormap = "gray",
-):
+    cmap: Colormap = "gray"):
+    
     fig, axs = plt.subplots(
         n_images, 
         len(n_intermediate_steps), 
@@ -65,6 +66,7 @@ def plot_image_evolution(
                 cmap="gray",
                 )
             axs[n_image, i].set_axis_off()
+
     return fig, axs
     
 def animation_images(
