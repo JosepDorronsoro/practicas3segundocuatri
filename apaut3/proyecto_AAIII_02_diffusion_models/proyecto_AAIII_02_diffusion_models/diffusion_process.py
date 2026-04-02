@@ -99,8 +99,6 @@ def euler_maruyama_integrator(
     # return the times and the 2 images batch for each temporal step    
     return times, x_t
 
-# ESTO ESTÁ POR EXPLICAR EN CLASE TODAVÍA, NI IDEA DE COMO HACERLO
-
 class DiffussionProcess:
 
     def __init__(
@@ -205,6 +203,7 @@ class GaussianDiffussionProcess(DiffussionProcess):
         
         return loss
 
+breakpoint()
 
 if __name__ == "__main__":
     import doctest
