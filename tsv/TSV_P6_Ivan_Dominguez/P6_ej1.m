@@ -20,14 +20,12 @@ E = edge(ima, 'canny');
 
 % Y graficamos los contornos en blanco y cyan
 
-canny(:, :, 1) = double(E); % R
-canny(:, :, 2) = 0;         % G
-canny(:, :, 3) = double(E); % B
+canny(:, :, 1) = ima;                   % R
+canny(:, :, 2) = ima + uint8(E*255);    % G
+canny(:, :, 3) = ima + uint8(E*255);    % B
 
 figure;
-imshow(ima); hold on 
-h=imshow(canny);
-set(h, 'AlphaData', E)
+imshow(canny)
 
 % Ahora lo repetimos para distintos valores del umbral de Canny: 
 
@@ -37,12 +35,10 @@ for th=0.2:0.1:0.5
 
 subplot(1, 4, k);
 E = edge(ima, 'canny', th);
-canny(:, :, 1) = double(E); % R
-canny(:, :, 2) = 0;         % G
-canny(:, :, 3) = double(E); % B
-imshow(ima); hold on;
-h = imshow(canny);
-set(h, 'AlphaData', E)
+canny(:, :, 1) = ima;                   % R
+canny(:, :, 2) = ima + uint8(E*255);    % G
+canny(:, :, 3) = ima + uint8(E*255);    % B
+imshow(canny)
 title(sprintf('Umbral: %.1f', th))
 k=k+1;
 
@@ -55,12 +51,10 @@ for sig=0.1:0.1:0.4
 
 subplot(4, 4, k);
 E = edge(ima, 'canny', th, sig);
-canny(:, :, 1) = double(E); % R
-canny(:, :, 2) = 0;         % G
-canny(:, :, 3) = double(E); % B
-imshow(ima); hold on;
-h = imshow(canny);
-set(h, 'AlphaData', E)
+canny(:, :, 1) = ima;                   % R
+canny(:, :, 2) = ima + uint8(E*255);    % G
+canny(:, :, 3) = ima + uint8(E*255);    % B
+imshow(canny)
 title(sprintf('Umbral: %.1f, Sigma. %.1f', th, sig))
 k=k+1;
 
