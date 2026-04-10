@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from numba import njit
+from numba import njit, prange
 
 # --- 1. CONFIGURACIÓN FÍSICA Y PARÁMETROS ---
 N_BODIES = 100        # Número de cuerpos
@@ -24,7 +24,7 @@ def compute_accelerations(pos, mass, acc):
         acc[i, 2] = 0.0
         
     # Calcular interacciones por pares
-    for i in range(n):
+    for i in prange(n):
         for j in range(n):
             if i == j:
                 continue
