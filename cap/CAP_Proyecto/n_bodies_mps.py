@@ -14,9 +14,9 @@ else:
 
 # --- 2. PARÁMETROS FÍSICOS ---
 
-N_BODIES = 100       
-G = 0.01              
-SOFTENING = 0.05      
+N_BODIES = 10000       
+G = 1             
+SOFTENING = 0.1     
 DT = 0.01             
 DTYPE = torch.float32 
 
@@ -25,7 +25,7 @@ torch.manual_seed(42)
 
 # Crear datos iniciales en CPU (NumPy es más fácil para inicializar formas)
 pos_np = np.random.randn(N_BODIES, 3).astype(np.float32) * 2.0
-vel_np = np.random.randn(N_BODIES, 3).astype(np.float32) * 0
+vel_np = np.random.randn(N_BODIES, 3).astype(np.float32) * 0.5
 mass_np = (np.random.rand(N_BODIES).astype(np.float32) * 10.0 + 1.0) # Masas 1-11
 
 # Mover datos a la GPU (MPS)
