@@ -1,5 +1,5 @@
 import numpy as np
-
+from scipy.spatial.distance import cdist
 
 def gaussian_kernel(u):
     """
@@ -7,11 +7,6 @@ def gaussian_kernel(u):
     """
     d = u.shape[-1]
     return (1 / (2*np.pi)**(d/2)) * np.exp(-0.5 * np.sum(u**2, axis=-1))
-
-
-
-
-
 
 def parzen_density(X_train, h=None, kernel=gaussian_kernel):
     """
@@ -32,13 +27,11 @@ def parzen_density(X_train, h=None, kernel=gaussian_kernel):
         Function that evaluates the estimated density
     """
 
-    
     N, d = X_train.shape
     
-        
-
     def density(x):
-         """
+        
+        """
         Estimate the probability density at the given points using kernel density estimation.
 
         Args:
@@ -48,9 +41,7 @@ def parzen_density(X_train, h=None, kernel=gaussian_kernel):
         Returns:
             np.ndarray: Estimated density values for each input point.
         """
-
-       # TODO
-
-        return # TODO: probability density estimates for each input point in x
+        
+        return (1/(h**d)) * np.sum(kernel( (1/h) * (x[:, np.newaxis, :] - X_train[np.newaxis, :, :]) ), axis=1)
 
     return density
