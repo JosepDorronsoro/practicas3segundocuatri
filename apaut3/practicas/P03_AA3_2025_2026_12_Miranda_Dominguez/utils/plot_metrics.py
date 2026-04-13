@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plot_metrics(dims, mse_list, kl_list, js_list, tv_list):
+def plot_metrics(dims, mse_list, kl_list, js_list, tv_list, samples=False): 
     """
         Plot multiple density estimation error metrics as a function of dimension.
 
@@ -34,7 +34,13 @@ def plot_metrics(dims, mse_list, kl_list, js_list, tv_list):
     axs[1,1].set_yscale("log")  # log scale for better visibility of TV distance
 
     for ax in axs.flat:
-        ax.set_xlabel("Dimension")
+        
+        # this needed to be changed in order to improve de visualization
+        if samples == False: 
+            ax.set_xlabel("Dimension")
+        else: 
+            ax.set_xlabel("Number of samples")
+            
         ax.set_ylabel("Metric value (log scale)")
         ax.grid(True)
 
