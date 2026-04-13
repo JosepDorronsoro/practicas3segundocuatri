@@ -3,3 +3,5 @@ __pycache__
 .ipynb_checkpoints
 __init__.py
 
+cifar-10-python.tar.gz
+*.tar.gz # opcional: ignorar todos los .tar.gz
