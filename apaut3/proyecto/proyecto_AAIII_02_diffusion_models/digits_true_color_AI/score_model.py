@@ -50,11 +50,7 @@ class ScoreNet(nn.Module):
         )
 
         # Encoder
-<<<<<<< HEAD
-        self.conv1 = nn.Conv2d(3,           channels[0], 3, stride=1, padding=1, bias=False)
-=======
         self.conv1 = nn.Conv2d(3, channels[0], 3, stride=1, padding=1, bias=False)
->>>>>>> 80b9b09116ec71a87cb85a6c529f7e63457d2b0d
         self.dense1 = Dense(embed_dim, channels[0])
         self.gnorm1 = nn.GroupNorm(4, num_channels=channels[0])
 
@@ -71,11 +67,7 @@ class ScoreNet(nn.Module):
         self.gnorm4 = nn.GroupNorm(32, num_channels=channels[3])
 
         # Decoder
-<<<<<<< HEAD
-        self.tconv4 = nn.ConvTranspose2d(channels[3],              channels[2], 3, stride=2, padding=1, output_padding=1, bias=False)
-=======
         self.tconv4 = nn.ConvTranspose2d(channels[3], channels[2], 3, stride=2, padding=1, output_padding=1, bias=False)
->>>>>>> 80b9b09116ec71a87cb85a6c529f7e63457d2b0d
         self.dense5 = Dense(embed_dim, channels[2])
         self.tgnorm4 = nn.GroupNorm(32, num_channels=channels[2])
 

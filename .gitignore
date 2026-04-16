@@ -5,3 +5,7 @@ __init__.py
 
 cifar-10-python.tar.gz
 *.tar.gz # opcional: ignorar todos los .tar.gz
+<<<<<<< HEAD
+=======
+*.mat
+>>>>>>> 80b9b09116ec71a87cb85a6c529f7e63457d2b0d
