@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./apaut3/proyecto/proyecto_AAIII_02_diffusion_models"
+    ]
+}
