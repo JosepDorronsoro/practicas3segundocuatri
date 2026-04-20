@@ -41,6 +41,6 @@ def parzen_density(X_train, h=None, kernel=gaussian_kernel):
             np.ndarray: Estimated density values for each input point.
         """
         
-        return (1/(h**d)) * np.sum(kernel( (1/h) * (x[:, np.newaxis, :] - X_train[np.newaxis, :, :]) ), axis=1)
+        return (1/(N*(h**d))) * np.sum(kernel( (1/h) * (x[:, np.newaxis, :] - X_train[np.newaxis, :, :]) ), axis=1)
 
     return density
