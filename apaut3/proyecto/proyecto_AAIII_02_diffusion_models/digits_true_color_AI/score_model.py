@@ -84,8 +84,12 @@ class ScoreNet(nn.Module):
         self.act = lambda x: x * torch.sigmoid(x)
         self.marginal_prob_std = marginal_prob_std
 
-    def forward(self, x, t):
+    def forward(self, x, t, class_emb):
         embed = self.act(self.embed(t))
+        if class_emb is not None:
+            embed = embed + class_emb
+            
+        # ... y el resto de tu forward sigue usando 'embed' como siempre
 
         # Encoder
         h1 = self.act(self.gnorm1(self.conv1(x)  + self.dense1(embed)))  # (B, 32, 32, 32)
