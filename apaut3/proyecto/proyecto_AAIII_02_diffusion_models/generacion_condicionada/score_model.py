@@ -86,6 +86,11 @@ class ScoreNet(nn.Module):
 
     def forward(self, x, t, class_emb):
         embed = self.act(self.embed(t))
+        if class_emb is not None:
+            embed = embed + class_emb
+            
+        # ... y el resto de tu forward sigue usando 'embed' como siempre
+
         # Encoder
         h1 = self.act(self.gnorm1(self.conv1(x)  + self.dense1(embed)))  # (B, 32, 32, 32)
         h2 = self.act(self.gnorm2(self.conv2(h1) + self.dense2(embed)))  # (B, 64, 16, 16)
