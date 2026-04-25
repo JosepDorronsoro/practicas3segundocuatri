@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"C:/Users/lucan/Desktop/practicas3segundocuatri/apaut3/proyecto/proyecto_AAIII_02_diffusion_models/diffusion_lib/processes\")",
+      "Bash(mkdir -p \"C:/Users/lucan/Desktop/practicas3segundocuatri/apaut3/proyecto/proyecto_AAIII_02_diffusion_models/diffusion_lib/schedules\")",
+      "Bash(mkdir -p \"C:/Users/lucan/Desktop/practicas3segundocuatri/apaut3/proyecto/proyecto_AAIII_02_diffusion_models/diffusion_lib/samplers\")",
+      "Bash(mkdir -p \"C:/Users/lucan/Desktop/practicas3segundocuatri/apaut3/proyecto/proyecto_AAIII_02_diffusion_models/diffusion_lib/metrics\")",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
