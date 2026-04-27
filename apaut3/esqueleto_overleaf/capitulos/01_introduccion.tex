@@ -1,0 +1,52 @@
+% =============================================================================
+%  Capítulo 1 — Introducción (se ESCRIBE AL FINAL, alto nivel).
+% =============================================================================
+\chapter{Introducción}
+\label{cap:introduccion}
+
+\section{Alcance}
+\label{sec:alcance}
+
+El presente proyecto tiene como objetivo fundamental la construcción de un
+sistema de Inteligencia Artificial generativa, altamente configurable, capaz
+de sintetizar imágenes tanto en blanco y negro como en color.
+
+Para lograr este objetivo, el alcance del sistema desarrollado abarca la
+implementación de los siguientes componentes técnicos:
+
+\begin{itemize}
+  \item \textbf{Procesos de difusión para la inyección de ruido:}
+        modelos \emph{Variance Exploding} (VE) y \emph{Variance Preserving} (VP).
+  \item \textbf{Muestreadores (samplers):} integrador estocástico
+        Euler--Maruyama, esquema Predictor--Corrector y \emph{Probability
+        Flow ODE} determinista.
+  \item \textbf{Programaciones de ruido (noise schedules):} decaimiento
+        lineal y de tipo coseno.
+  \item \textbf{Métricas de evaluación:} \emph{Negative Log-Likelihood} (NLL),
+        \emph{Bits Per Dimension} (BPD), \emph{Fréchet Inception Distance}
+        (FID) e \emph{Inception Score} (IS).
+  \item \textbf{Generación controlable:} muestreo condicionado a clases
+        (CFG) e imputación de imágenes parcialmente observadas.
+\end{itemize}
+
+\section{Estructura del documento}
+\label{sec:estructura}
+
+\todo{Reescribir cuando esté la versión final. Texto de partida:}
+
+En el \textbf{Capítulo~\ref{cap:estado-arte}} se presenta el Estado del Arte,
+con la formulación matemática de los modelos de difusión, los samplers, las
+\emph{noise schedules}, las métricas de calidad y el problema de la
+generación condicionada.
+
+El \textbf{Capítulo~\ref{cap:desarrollo}} aborda el Desarrollo de Software y
+Diseño, detallando el análisis de requisitos, los casos de uso, la
+arquitectura del paquete \texttt{diffusion\_lib} y la planificación temporal.
+
+En el \textbf{Capítulo~\ref{cap:resultados}} se exponen los Resultados,
+evaluando el rendimiento, la robustez y la calidad gráfica del sistema
+mediante comparativas y métricas cuantitativas.
+
+Finalmente, el \textbf{Capítulo~\ref{cap:conclusiones}} recoge las
+Conclusiones del trabajo, y el documento se cierra con la bibliografía y los
+apéndices técnicos.

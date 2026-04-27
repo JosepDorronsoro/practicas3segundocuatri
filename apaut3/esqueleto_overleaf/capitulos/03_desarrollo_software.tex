@@ -1,0 +1,213 @@
+% =============================================================================
+%  Capítulo 3 — Desarrollo de Software y Diseño
+%
+%  Este capítulo está casi vacío en tu PDF actual. Aquí tienes el esqueleto
+%  completo según la rúbrica del enunciado.
+%
+%  RECUERDA: el "Capítulo 4 Desarrollo" vacío de tu PDF actual NO existe en
+%  esta plantilla. La rúbrica solo prevé un capítulo de "Desarrollo de software".
+% =============================================================================
+\chapter{Desarrollo de Software y Diseño}
+\label{cap:desarrollo}
+
+% -----------------------------------------------------------------------------
+\section{Análisis de Requisitos}
+\label{sec:requisitos}
+
+Los siguientes requisitos se han definido de manera específica para permitir
+la ejecución de tests automatizados que demuestren su cumplimiento.
+
+\subsection{Requisitos funcionales}
+\label{sec:rf}
+
+\todo{Lista numerada con referencias al §2. Ejemplos:
+\begin{itemize}
+  \item \textbf{RF-01:} El sistema debe implementar el proceso de difusión VE
+        descrito en §\ref{sec:ve}.
+  \item \textbf{RF-02:} El sistema debe implementar el proceso de difusión VP
+        descrito en §\ref{sec:vp}.
+  \item \textbf{RF-03:} El sistema debe permitir seleccionar entre los procesos
+        VE y VP mediante un parámetro de configuración.
+  \item \textbf{RF-04:} El sistema debe implementar el sampler Euler--Maruyama.
+  \item \textbf{RF-05:} El sistema debe implementar el sampler
+        Predictor--Corrector con SNR objetivo configurable.
+  \item \textbf{RF-06:} El sistema debe implementar el sampler Probability
+        Flow ODE.
+  \item \textbf{RF-07:} El sistema debe implementar las schedules lineal y
+        coseno.
+  \item \textbf{RF-08:} El sistema debe calcular las métricas BPD, FID e IS
+        sobre un conjunto de muestras.
+  \item \textbf{RF-09:} El sistema debe permitir la generación condicionada por
+        clase mediante CFG.
+  \item \textbf{RF-10:} El sistema debe permitir la imputación de imágenes
+        parcialmente observadas mediante una máscara binaria.
+  \item \textbf{RF-11:} El sistema debe soportar imágenes en blanco y negro
+        (1 canal) y en color (3 canales).
+\end{itemize}}
+
+\subsection{Requisitos no funcionales}
+\label{sec:rnf}
+
+\paragraph{Entorno y herramientas.}
+\todo{Versiones exactas. Mirar \texttt{.python-version} y \texttt{uv.lock}:
+\begin{itemize}
+  \item Python: \todo{X.Y}
+  \item PyTorch: \todo{X.Y}
+  \item Gestor de dependencias: \texttt{uv}
+  \item Otras: NumPy, scipy, matplotlib, torchvision, scikit-image, etc.
+\end{itemize}}
+
+\paragraph{Hardware.}
+\todo{GPU usada (modelo, VRAM), CPU, RAM. Indicar mínimos para
+inferencia y para entrenamiento por separado.}
+
+\paragraph{Rendimiento.}
+\todo{Especificaciones cuantitativas verificables, p.ej.:
+"Una imagen 28$\times$28 debe generarse en menos de 2~s con el sampler
+Euler--Maruyama y $N=500$ pasos en una GPU NVIDIA RTX 3060". Cada uno
+debe corresponderse con una entrada de la tabla de Resultados §\ref{cap:resultados}.}
+
+\paragraph{Compatibilidad.}
+\todo{Sistemas operativos soportados, formatos de checkpoint
+(\texttt{.pth}), interoperabilidad con otros frameworks.}
+
+\paragraph{Estilo y documentación.}
+\todo{PEP-8 verificado con \texttt{ruff}/\texttt{black}, type hints,
+docstrings estilo NumPy, generación automática con Sphinx/mkdocs.}
+
+\paragraph{Metodología de desarrollo.}
+\todo{Git/GitHub, ramas \emph{feature}, pull requests, revisión cruzada,
+CI con GitHub Actions.}
+
+% -----------------------------------------------------------------------------
+\section{Casos de Uso}
+\label{sec:casos-uso}
+
+\todo{Describir los casos de uso principales, cada uno enlazado a un
+notebook real del proyecto. Ejemplos:
+\begin{itemize}
+  \item \textbf{CU-01 — Generación incondicional}: usuario entrena un modelo
+        VP sobre MNIST y muestrea N imágenes nuevas.
+        Notebook: \texttt{project\_AAIII\_teamCode.ipynb}.
+  \item \textbf{CU-02 — Generación condicionada por clase}: usuario carga
+        modelo CFG entrenado sobre SVHN y genera imágenes de la clase 7.
+        Notebook: \texttt{cfg\_diffusion\_models\_SVHN.ipynb}.
+  \item \textbf{CU-03 — Imputación}: usuario carga imagen parcialmente
+        observada y completa los píxeles faltantes.
+  \item \textbf{CU-04 — Comparativa de samplers}: usuario evalúa FID de
+        EM, PC y PF-ODE sobre el mismo modelo.
+  \item \textbf{CU-05 — Cálculo de BPD}: usuario evalúa BPD sobre un
+        conjunto de test.
+\end{itemize}}
+
+% -----------------------------------------------------------------------------
+\section{Arquitectura y Diseño}
+\label{sec:arquitectura}
+
+\subsection{Estructura del paquete}
+\label{sec:estructura-paquete}
+
+El sistema se organiza como un paquete Python instalable con la siguiente
+estructura de módulos:
+
+\begin{lstlisting}[language=, caption={Estructura del paquete \texttt{diffusion\_lib}}]
+diffusion_lib/
+├── __init__.py
+├── model.py                # U-Net (score network)
+├── processes/              # Procesos de difusión
+│   ├── base.py             # BaseProcess (ABC)
+│   ├── ve.py               # Variance Exploding
+│   └── vp.py               # Variance Preserving
+├── samplers/               # Integradores de la SDE inversa
+│   ├── base.py             # BaseSampler (ABC)
+│   ├── euler_maruyama.py
+│   ├── predictor_corrector.py
+│   ├── probability_flow_ode.py
+│   └── imputation.py
+├── schedules/              # Noise schedules
+│   ├── base.py             # BaseSchedule (ABC)
+│   ├── linear.py
+│   └── cosine.py
+└── metrics/                # Métricas de calidad
+    ├── bpd.py              # Bits per dimension
+    └── fid_is.py           # FID e IS sobre InceptionV3
+\end{lstlisting}
+
+\subsection{Diagrama de clases}
+\label{sec:diagrama-clases}
+
+\todo{Insertar UML simple. Sugerencia: usar PlantUML o draw.io y exportar
+a PDF. Mostrar:
+\begin{itemize}
+  \item \texttt{BaseProcess} $\leftarrow$ \texttt{VE}, \texttt{VP}
+  \item \texttt{BaseSampler} $\leftarrow$ \texttt{EulerMaruyama},
+        \texttt{PredictorCorrector}, \texttt{ProbabilityFlowODE}, \texttt{Imputation}
+  \item \texttt{BaseSchedule} $\leftarrow$ \texttt{Linear}, \texttt{Cosine}
+  \item Relaciones de composición (Sampler usa Process, Process usa Schedule).
+\end{itemize}}
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{diagrama_clases.pdf}
+%   \caption{Diagrama de clases del paquete \texttt{diffusion\_lib}.}
+%   \label{fig:diagrama-clases}
+% \end{figure}
+
+\subsection{Diagrama de secuencia (entrenamiento y muestreo)}
+\todo{Opcional pero recomendado. Mostrar el flujo:
+\begin{enumerate}
+  \item Entrenamiento: dataset $\to$ Process.add\_noise $\to$ U-Net.forward $\to$ loss $\to$ optimizer.
+  \item Muestreo: prior $\to$ Sampler.step (loop) $\to$ Process.reverse\_drift $\to$ U-Net $\to$ imagen.
+\end{enumerate}}
+
+% -----------------------------------------------------------------------------
+\section{Validación y Calidad del Software}
+\label{sec:calidad}
+
+\subsection{Tests automatizados}
+\todo{Estrategia: \texttt{pytest} con tests unitarios por módulo
+(\texttt{test\_processes.py}, \texttt{test\_samplers.py}, etc.) y al menos
+un test de integración. Indicar cobertura.}
+
+\subsection{Integración continua}
+\todo{GitHub Actions: workflow con steps de \texttt{ruff check},
+\texttt{pytest}, build de docs.}
+
+\subsection{Estilo y documentación}
+\todo{PEP-8, \texttt{black}, \texttt{ruff}, docstrings NumPy, Sphinx para
+auto-documentación de la API.}
+
+\subsection{Licencia}
+\todo{Decidir y justificar: MIT (permisiva) / Apache-2.0 (incluye
+patentes) / GPL (copyleft). Para un proyecto académico/open-source
+suele recomendarse MIT.}
+
+\subsection{Implicaciones éticas}
+\todo{Riesgos de modelos generativos: deepfakes, sesgos heredados de los
+datasets (MNIST/SVHN/gatos no son problemáticos, pero conviene
+mencionar el riesgo en datasets faciales o con sesgo demográfico),
+coste energético del entrenamiento.}
+
+% -----------------------------------------------------------------------------
+\section{Planificación del Proyecto}
+\label{sec:planificacion}
+
+\todo{Diagrama de Gantt. Fases sugeridas:
+\begin{enumerate}
+  \item Investigación bibliográfica y revisión teórica (semanas 1--3).
+  \item Implementación de procesos VE/VP y entrenamiento básico (semanas 3--5).
+  \item Implementación de samplers (semanas 4--6).
+  \item Implementación de schedules y métricas (semanas 6--7).
+  \item Generación condicionada e imputación (semanas 7--9).
+  \item Generación de resultados y comparativas (semanas 9--11).
+  \item Redacción del informe (semanas 8--12, paralelo).
+\end{enumerate}
+Recomendado: usar la plantilla de TikZ \texttt{pgfgantt} o exportar
+desde una hoja de cálculo.}
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=\textwidth]{gantt.pdf}
+%   \caption{Diagrama de Gantt del proyecto.}
+%   \label{fig:gantt}
+% \end{figure}

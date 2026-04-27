@@ -1,0 +1,145 @@
+% =============================================================================
+%  Capítulo 4 — Resultados
+%
+%  En tu PDF actual este es el Capítulo 5. Renumerar al borrar el "Cap. 4
+%  Desarrollo" vacío.
+%
+%  Una subsección por requisito del enunciado:
+%   §4.1 ⟷ requisito 1 (procesos VE/VP)
+%   §4.2 ⟷ requisito 3 (schedules)
+%   §4.3 ⟷ requisito 2 (samplers)        ← FALTA en tu PDF
+%   §4.4 ⟷ requisito 5 (controllable)    ← FALTA imputación
+%   §4.5 ⟷ requisito B&N + color
+%   §4.6 ⟷ rendimiento (RNF)
+% =============================================================================
+\chapter{Resultados}
+\label{cap:resultados}
+
+\todo{Introducción breve del capítulo: qué se compara, sobre qué datasets,
+con qué métricas, condiciones de evaluación reproducibles
+(seed, hardware, número de muestras).}
+
+% -----------------------------------------------------------------------------
+\section{Comparación de procesos: VE vs VP}
+\label{sec:res-ve-vp}
+
+\todo{Setup: mismo dataset (MNIST), mismo sampler (Euler--Maruyama),
+misma seed, mismo número de pasos $N$. Variar solo el proceso.
+
+Incluir:
+\begin{itemize}
+  \item Galería visual lado a lado (8--16 muestras por proceso).
+  \item Tabla con FID, IS y BPD por proceso.
+  \item Curvas de loss vs época superpuestas.
+  \item Discusión: estabilidad de entrenamiento, calibración de
+        $\sigma_\text{max}$ (VE) vs $\beta_\text{max}$ (VP).
+\end{itemize}}
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.95\textwidth]{galeria_ve_vp.pdf}
+%   \caption{Comparativa visual VE (arriba) vs VP (abajo) sobre MNIST.}
+%   \label{fig:ve-vs-vp}
+% \end{figure}
+
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{lccc}
+%     \toprule
+%     Proceso & FID $\downarrow$ & IS $\uparrow$ & BPD $\downarrow$ \\
+%     \midrule
+%     VE & TODO & TODO & TODO \\
+%     VP & TODO & TODO & TODO \\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{Métricas VE vs VP sobre MNIST.}
+% \end{table}
+
+% -----------------------------------------------------------------------------
+\section{Comparación de schedules: lineal vs coseno (sobre VP)}
+\label{sec:res-schedules}
+
+\todo{Setup: VP fijo, mismo sampler, mismo dataset.
+
+Incluir:
+\begin{itemize}
+  \item Galería visual.
+  \item Trayectoria forward (figura tipo Nichol \& Dhariwal pero
+        \emph{generada con tu código}, no copiada).
+  \item Tabla FID/IS/BPD.
+  \item Discusión: por qué coseno conserva señal hasta más tarde y
+        ayuda en baja resolución.
+\end{itemize}}
+
+% -----------------------------------------------------------------------------
+\section{Comparación de samplers: EM vs PC vs PF-ODE}
+\label{sec:res-samplers}
+
+\todo{NUEVA respecto a tu PDF. Es la sección más vendible del capítulo.
+
+Setup: mismo modelo entrenado, misma seed, distinto sampler.
+
+Incluir:
+\begin{itemize}
+  \item Galería visual lado a lado.
+  \item Tabla con FID, tiempo por imagen y \#evals de red por muestra.
+  \item \textbf{Curva calidad vs N} (FID en función de
+        $N \in \{10, 25, 50, 100, 250, 500, 1000\}$). Esta gráfica
+        es la que mejor muestra la diferencia entre samplers.
+  \item Demostración del determinismo del PF-ODE: dos corridas con la
+        misma seed dan resultado idéntico; con EM o PC, distintas.
+\end{itemize}}
+
+% -----------------------------------------------------------------------------
+\section{Generación controlable}
+\label{sec:res-controlable}
+
+\subsection{Class-conditional con CFG}
+\label{sec:res-cfg}
+
+\todo{Rejilla 10$\times$8 sobre SVHN: filas = clase, columnas = muestras.
+
+\textbf{Sweep del peso de guidance} $w \in \{0, 1, 3, 5, 10\}$ para mostrar
+el trade-off fidelidad-clase vs diversidad.}
+
+\subsection{Imputación}
+\label{sec:res-imputacion}
+
+\todo{NUEVA respecto a tu PDF. Requisito 5b del enunciado.
+
+Tres filas por ejemplo:
+\begin{itemize}
+  \item Imagen original.
+  \item Máscara aplicada.
+  \item Reconstrucción (varias muestras para mostrar diversidad).
+\end{itemize}
+Probar al menos tres tipos de máscara: bandas horizontales, cuadrado
+central, ruido aleatorio.}
+
+% -----------------------------------------------------------------------------
+\section{Resultados sobre dataset color}
+\label{sec:res-color}
+
+\todo{Demuestra el "B\&W or color images" del enunciado.
+
+Sobre los gatos / SVHN:
+\begin{itemize}
+  \item Galería de muestras de los checkpoints (5, 50, 300 épocas...).
+  \item Métricas FID/IS para cada checkpoint.
+  \item Discusión: relación con el fenómeno del double descent
+        (si se mantiene esa observación en §2).
+\end{itemize}}
+
+% -----------------------------------------------------------------------------
+\section{Análisis de rendimiento}
+\label{sec:res-rendimiento}
+
+\todo{Verifica los Requisitos No Funcionales cuantitativos del
+§\ref{sec:rnf}.
+
+Tabla:
+\begin{itemize}
+  \item Filas: combinaciones (proceso $\times$ sampler $\times$ $N$).
+  \item Columnas: segundos/imagen, memoria pico GPU, \#evals red,
+        cumple-RNF (sí/no).
+\end{itemize}}

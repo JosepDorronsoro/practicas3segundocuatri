@@ -1,0 +1,77 @@
+\babel@toc {nil}{}\relax 
+\contentsline {chapter}{Resumen}{iii}{chapter*.1}%
+\contentsline {chapter}{Abstract}{v}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Introducción}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Alcance}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Estructura del documento}{1}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Estado del Arte}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introducción al problema}{3}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Objetivo}{3}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Estimación de densidad}{3}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Modelos de difusión}{3}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Proceso forward (inyección de ruido)}{3}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Score matching y función de pérdida}{3}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Proceso backward (generación)}{3}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Variance Exploding (VE)}{3}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}Variance Preserving (VP)}{3}{subsection.2.2.5}%
+\contentsline {subsection}{\numberline {2.2.6}Ecuación de Fokker-Planck}{3}{subsection.2.2.6}%
+\contentsline {subsection}{\numberline {2.2.7}Integración numérica de la SDE inversa: samplers}{4}{subsection.2.2.7}%
+\contentsline {section}{\numberline {2.3}Generación controlable}{4}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}El problema de la generación condicionada}{4}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Classifier guidance}{4}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Classifier-free guidance}{4}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Función de pérdida}{4}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Planteamiento de las SDEs}{4}{subsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.3.6}SDE backward condicionada}{4}{subsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.3.7}Imputación}{4}{subsection.2.3.7}%
+\contentsline {section}{\numberline {2.4}Métricas de calidad para las imágenes generadas}{4}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Negative log-likelihood (NLL)}{4}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Bits per dimension (BPD)}{5}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Fréchet Inception Distance (FID)}{5}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Inception Score (IS)}{5}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Fenómeno del double descent}{5}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Desarrollo de Software y Diseño}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Análisis de Requisitos}{7}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Requisitos funcionales}{7}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Requisitos no funcionales}{8}{subsection.3.1.2}%
+\contentsline {paragraph}{Entorno y herramientas.}{8}{section*.4}%
+\contentsline {paragraph}{Hardware.}{8}{section*.5}%
+\contentsline {paragraph}{Rendimiento.}{8}{section*.6}%
+\contentsline {paragraph}{Compatibilidad.}{8}{section*.7}%
+\contentsline {paragraph}{Estilo y documentación.}{8}{section*.8}%
+\contentsline {paragraph}{Metodología de desarrollo.}{8}{section*.9}%
+\contentsline {section}{\numberline {3.2}Casos de Uso}{8}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Arquitectura y Diseño}{9}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Estructura del paquete}{9}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Diagrama de clases}{9}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Diagrama de secuencia (entrenamiento y muestreo)}{9}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Validación y Calidad del Software}{10}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Tests automatizados}{10}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Integración continua}{10}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Estilo y documentación}{10}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Licencia}{10}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Implicaciones éticas}{10}{subsection.3.4.5}%
+\contentsline {section}{\numberline {3.5}Planificación del Proyecto}{10}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Resultados}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Comparación de procesos: VE vs VP}{11}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Comparación de schedules: lineal vs coseno (sobre VP)}{11}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Comparación de samplers: EM vs PC vs PF-ODE}{11}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Generación controlable}{12}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Class-conditional con CFG}{12}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Imputación}{12}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Resultados sobre dataset color}{12}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Análisis de rendimiento}{12}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Conclusiones}{13}{chapter.5}%
+\contentsline {paragraph}{Resumen del trabajo realizado.}{13}{section*.10}%
+\contentsline {paragraph}{Logros.}{13}{section*.11}%
+\contentsline {paragraph}{Limitaciones.}{13}{section*.12}%
+\contentsline {paragraph}{Trabajo futuro.}{13}{section*.13}%
+\contentsline {paragraph}{Reflexión personal.}{13}{section*.14}%
+\contentsline {chapter}{Bibliografía}{14}{section*.14}%
+\contentsline {chapter}{\numberline {A}Autoencoders, espacios latentes y manifold hypothesis}{17}{appendix.A}%
+\contentsline {chapter}{\numberline {B}U-Net}{19}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Movimiento Browniano y proceso de Wiener}{21}{appendix.C}%
+\contentsline {chapter}{\numberline {D}De \emph {denoising score matching} individual al objetivo combinado multi-escala}{23}{appendix.D}%
+\contentsline {chapter}{\numberline {E}Gaussiana multivariada, divergencia Kullback--Leibler y ELBO}{25}{appendix.E}%
+\contentsline {chapter}{\numberline {F}Integración numérica de la SDE inversa: detalles}{27}{appendix.F}%
+\contentsline {chapter}{\numberline {G}Comparativa de métricas}{29}{appendix.G}%

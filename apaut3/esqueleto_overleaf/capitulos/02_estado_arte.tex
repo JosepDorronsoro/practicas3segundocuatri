@@ -1,0 +1,131 @@
+% =============================================================================
+%  Capítulo 2 — Estado del Arte
+%  Este capítulo es donde más texto tienes ya hecho. Trasvasa de tu PDF
+%  actual aquí y aplica los arreglos puntuales del resumen de revisión.
+% =============================================================================
+\chapter{Estado del Arte}
+\label{cap:estado-arte}
+
+% -----------------------------------------------------------------------------
+\section{Introducción al problema}
+\label{sec:intro-problema}
+
+\todo{Trasvasar de tu PDF actual la subsección "Introducción al problema",
+"Objetivo" y "Estimación de densidad". Ya están bien redactadas.}
+
+\subsection{Objetivo}
+\label{sec:objetivo}
+\todo{Texto existente.}
+
+\subsection{Estimación de densidad}
+\label{sec:estimacion-densidad}
+\todo{Texto existente. Arreglar el cite \texttt{[2, Section 3.1]} si compila mal.}
+
+% -----------------------------------------------------------------------------
+\section{Modelos de difusión}
+\label{sec:modelos-difusion}
+
+\subsection{Proceso forward (inyección de ruido)}
+\label{sec:forward}
+\todo{Texto existente.}
+
+\subsection{Score matching y función de pérdida}
+\label{sec:score-matching}
+\todo{Texto existente. \emph{Recordar:} añadir frase corta presentando la
+U-Net como aproximador del score y remitir al apéndice
+correspondiente.}
+
+\subsection{Proceso backward (generación)}
+\label{sec:backward}
+\todo{Texto existente.}
+
+\subsection{Variance Exploding (VE)}
+\label{sec:ve}
+\todo{Texto existente. Al final, añadir párrafo de \textbf{ventajas y
+limitaciones} (lo pide el enunciado).}
+
+\subsection{Variance Preserving (VP)}
+\label{sec:vp}
+\todo{Texto existente. Al final, párrafo de \textbf{ventajas y limitaciones}
+y \textbf{tabla comparativa VE vs VP}.
+
+\textbf{ARREGLAR}: el cosine schedule debe ir con cuadrado:
+$f(t) = \cos^2\!\left(\frac{t/T+s}{1+s}\cdot\frac{\pi}{2}\right)$.}
+
+\subsection{Ecuación de Fokker-Planck}
+\label{sec:fp}
+\todo{Texto existente.}
+
+\subsection{Integración numérica de la SDE inversa: samplers}
+\label{sec:samplers}
+
+\todo{Subsección NUEVA. Tienes el archivo redactado en
+\texttt{subseccion\_samplers.tex} (versión compacta). Pegar aquí.
+
+Cubre los tres samplers (EM, PC, PF-ODE) que son requisito 2 del enunciado.}
+
+% -----------------------------------------------------------------------------
+\section{Generación controlable}
+\label{sec:gen-controlable}
+
+\todo{RENOMBRAR de "Modelos de procesos de difusión para generación
+condicionada" a "Generación controlable" para que cuadre con el
+enunciado (apartado 5).}
+
+\subsection{El problema de la generación condicionada}
+\todo{Texto existente.}
+
+\subsection{Classifier guidance}
+\todo{Texto existente.}
+
+\subsection{Classifier-free guidance}
+\todo{Texto existente.}
+
+\subsection{Función de pérdida}
+\todo{Texto existente.}
+
+\subsection{Planteamiento de las SDEs}
+\todo{Texto existente.}
+
+\subsection{SDE backward condicionada}
+\todo{Texto existente.}
+
+\subsection{Imputación}
+\label{sec:imputacion}
+\todo{Subsección NUEVA. Tienes el archivo redactado en
+\texttt{subseccion\_imputacion.tex}. Pegar aquí. Cubre el requisito 5b
+del enunciado.}
+
+% -----------------------------------------------------------------------------
+\section{Métricas de calidad para las imágenes generadas}
+\label{sec:metricas}
+
+\subsection{Negative log-likelihood (NLL)}
+\todo{Texto existente. \textbf{ARREGLAR}:
+\begin{itemize}
+  \item Eliminar la frase "(que para este problema pueden ser las mismas que
+        para train)" — la NLL en train sobreestima.
+  \item Nombrar explícitamente la \emph{dequantization} uniforme (Theis
+        et al. 2016) en la definición $\v{y} = \v{x} + u$.
+  \item La expresión del ELBO debe ser \emph{desigualdad} ($\geq$), no
+        igualdad.
+\end{itemize}}
+
+\subsection{Bits per dimension (BPD)}
+\todo{Texto existente.}
+
+\subsection{Fréchet Inception Distance (FID)}
+\todo{Texto existente.}
+
+\subsection{Inception Score (IS)}
+\todo{Texto existente. \textbf{ARREGLAR}: las referencias a las ecuaciones
+(2.28) y (2.29) están rotas, no existen. Renumerar con \texttt{\textbackslash ref}.}
+
+% -----------------------------------------------------------------------------
+\section{Fenómeno del double descent}
+\label{sec:double-descent}
+
+\todo{O bien desarrollar como subsección (definición Belkin/Nakkiran 2019,
+relación con la capacidad de la U-Net y el tamaño del dataset) o bien
+\textbf{eliminar de aquí} y mover como observación empírica al
+Capítulo de Conclusiones, citando los datos de §5.}
