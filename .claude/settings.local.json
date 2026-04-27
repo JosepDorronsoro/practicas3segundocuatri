@@ -7,7 +7,9 @@
       "Bash(mkdir -p \"C:/Users/lucan/Desktop/practicas3segundocuatri/apaut3/proyecto/proyecto_AAIII_02_diffusion_models/diffusion_lib/metrics\")",
       "Bash(python3 -c ' *)",
       "Bash(python -c \"import json; nb=json.load\\(open\\('project_AAIII_teamCode_lastName1_lastName2.ipynb'\\)\\); cells={c['id']:c for c in nb['cells']}; print\\(json.dumps\\(cells.get\\('e969a519',{}\\).get\\('source','NOT FOUND'\\), indent=2\\)\\)\")",
-      "PowerShell(cd \"C:\\\\Users\\\\lucan\\\\Desktop\\\\practicas3segundocuatri\\\\apaut3\\\\proyecto\\\\proyecto_AAIII_02_diffusion_models\"; $nb = Get-Content 'project_AAIII_teamCode_lastName1_lastName2.ipynb' | ConvertFrom-Json; $cell = $nb.cells | Where-Object { $_.id -eq 'e969a519' }; $cell.source -join '')"
+      "PowerShell(cd \"C:\\\\Users\\\\lucan\\\\Desktop\\\\practicas3segundocuatri\\\\apaut3\\\\proyecto\\\\proyecto_AAIII_02_diffusion_models\"; $nb = Get-Content 'project_AAIII_teamCode_lastName1_lastName2.ipynb' | ConvertFrom-Json; $cell = $nb.cells | Where-Object { $_.id -eq 'e969a519' }; $cell.source -join '')",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
