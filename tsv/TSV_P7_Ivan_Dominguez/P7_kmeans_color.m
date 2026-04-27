@@ -10,29 +10,31 @@ addpath(genpath('./P7imas&code/'));
 
 ejercicio1="Práctica 7 - Ejercicio kmeans";
 
-gray = true; % false;
+gray = false; % cambiar para imagen a color
 
-% --- Cargar imagen ---
-[img, map] = imread('tiergarten-schonbrunn.jpg'); % la imagen es rgb => map = []
+[img, map] = imread('tiergarten-schonbrunn.jpg'); 
 if (gray)
     % pasarla a gris [0..1]
-    img = im2double(img);
+    % rgb2gray -> quita dos canales 
+    % im2double no solo cambia el tipado, también la escala
+    img = im2double(rgb2gray(img));
+else
+    img = im2double(img); 
 end
 
 % --- Reorganizar la imagen en una matriz de (M*N)xC ---
 [m, n, c] = size(img);
-pixels = reshape(img, n*m, c); 
+pixels = reshape(img, [m*n, c]); 
 
 % --- Elegir el número de clusters ---
 K = 4; 
 
 % --- Aplicar kmeans ---
 rng(1); % para reproducir resultados iguales para cada imagen/ejecución
-[idx, C] = kmeans(pixels, K, 'Distance', 'sqeuclidean', 'Replicates', 4);
-
+[idx, C] = kmeans(pixels, K, 'Distance', 'sqeuclidean', 'Replicates', 4); 
 % --- Reconstruir la imagen segmentada ---
-segmented_pixels = C(idx, :);
-segmented_img = reshape(segmented_pixels, m, n, c);
+segmented_pixels = C(idx,:);
+segmented_img = reshape(segmented_pixels, [m, n, c]);
 
 % --- Mostrar resultado ---
 figure; 
@@ -42,7 +44,7 @@ imshow(img); title('Imagen original');
 subplot (3,2,3)
 imshow(segmented_img); colorbar; title(sprintf('Imagen segmentada con K = %d\nE=%.5g', K, calcularEnergia(segmented_img)));
 h324=subplot (3,2,4);
-imshow(rgb2gray(segmented_img)); colormap(h324,"hsv"); colorbar; title(sprintf('Imagen segmentada con K = %d\nE=%.5g', K, calcularEnergia(segmented_img)));
+imshow(rgb2gray(segmented_img)); colormap(h324,"hsv"); colorbar; title(sprintf('Imagen segmentada con K = %d\nE=%.5g', K, calcularEnergia(rgb2gray(segmented_img))));
 
 subplot (3,2,5)
 diff_double=double(img)-segmented_img;
