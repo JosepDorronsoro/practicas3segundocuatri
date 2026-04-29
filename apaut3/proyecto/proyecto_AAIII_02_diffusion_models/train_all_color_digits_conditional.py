@@ -1,5 +1,3 @@
-
-
 import os
 import sys
 from pathlib import Path
@@ -25,7 +23,7 @@ from diffusion_lib import (
 )
 
 # ── Config ────────────────────────────────────────────────────────────────────
-EPOCHS      = 300
+EPOCHS      = 200
 BATCH_SIZE  = 64
 LR          = 1e-3
 N_STEPS     = 500        # reverse integration steps at sampling time
@@ -58,6 +56,7 @@ print(f'SVHN: {len(dataset)} images  |  shape {dataset[0][0].shape}')
 
 # ── Registries ────────────────────────────────────────────────────────────────
 PROCESSES = {
+    'VE-Brownian':    VEProcess(sigma=25.0),
     'VP-Linear':      VPProcess(schedule=LinearSchedule()),
     'VP-Cosine':      VPProcess(schedule=CosineSchedule()),
     'VP-Exponential': VPProcess(schedule=ExponentialSchedule()),
@@ -67,7 +66,6 @@ PROCESSES = {
 # ── Training ──────────────────────────────────────────────────────────────────
 def train_model(process, net: CondUNetScoreModel, ckpt_path: Path, T: float = 1.0) -> None:
     """Score-matching training loop; saves checkpoint on completion."""
-    gm = GenerativeDiffusionModel(process, EulerMaruyamaSampler(), net, device, T=T)
     optimizer = optim.Adam(net.parameters(), lr=LR)
     net.train()
     for epoch in range(EPOCHS):
@@ -83,6 +81,10 @@ def train_model(process, net: CondUNetScoreModel, ckpt_path: Path, T: float = 1.
             score = net(x_t, t, class_label=labels)
             per_sample = torch.sum((sigma * score + noise) ** 2, dim=list(range(1, x.dim())))
             loss = per_sample.mean()
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            epoch_loss += loss.item()
         avg = epoch_loss / len(loader)
         print(f'  Epoch {epoch + 1:3d}/{EPOCHS}  loss={avg:.4f}')
     torch.save(net.state_dict(), ckpt_path)
@@ -108,5 +110,3 @@ for proc_name, process in PROCESSES.items():
         train_model(process, net, ckpt_path, T=T)
 
     trained_nets[proc_name] = (process, net, T)
-
-
