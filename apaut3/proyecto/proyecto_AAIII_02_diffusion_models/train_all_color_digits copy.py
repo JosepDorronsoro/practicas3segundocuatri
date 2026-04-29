@@ -46,7 +46,9 @@ def load_svhn(path: Path) -> TensorDataset:
     """Load SVHN .mat file into a TensorDataset with images in [0, 1], (N, C, H, W)."""
     mat = scipy.io.loadmat(path)
     X = np.transpose(mat['X'], (3, 2, 0, 1)).astype(np.float32) / 255.0
-    return TensorDataset(torch.from_numpy(X))
+    y = mat['y'].flatten().astype(np.int64)
+    y[y == 10] = 0
+    return TensorDataset(torch.from_numpy(X), torch.from_numpy(y))
 
 
 dataset = load_svhn(DATA_PATH)
@@ -70,12 +72,17 @@ def train_model(process, net: CondUNetScoreModel, ckpt_path: Path, T: float = 1.
     net.train()
     for epoch in range(EPOCHS):
         epoch_loss = 0.0
-        for (x,) in loader:
-            loss = gm.compute_loss(x)
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            epoch_loss += loss.item()
+        for (x, labels) in loader:
+            x, labels = x.to(device), labels.to(device)
+            mask = torch.rand(x.shape[0], device=device) < 0.1
+            labels[mask] = net.null_token
+            t = torch.rand(x.shape[0], device=device) * (1.0 - 1e-5) + 1e-5
+            x_t, noise = process.perturb(x, t)
+            view_shape = [x.shape[0]] + [1] * (x.dim() - 1)
+            sigma = process.sigma_t(t.view(*view_shape))
+            score = net(x_t, t, class_label=labels)
+            per_sample = torch.sum((sigma * score + noise) ** 2, dim=list(range(1, x.dim())))
+            loss = per_sample.mean()
         avg = epoch_loss / len(loader)
         print(f'  Epoch {epoch + 1:3d}/{EPOCHS}  loss={avg:.4f}')
     torch.save(net.state_dict(), ckpt_path)
