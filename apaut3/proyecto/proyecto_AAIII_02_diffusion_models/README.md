@@ -28,6 +28,8 @@ proyecto_AAIII_02_diffusion_models/
 │
 ├── train_all_color_digits.py       # Train unconditional models on SVHN colour digits
 ├── train_all_color_digits_conditional.py  # Train conditional models (CFG)
+├── train_cats.py                   # Train cat diffusion model (VP-Exp, 2-phase)
+├── cats_metrics.ipynb              # FID / BPD / IS comparison: cat Phase 1 vs Phase 2
 │
 ├── other_checkpoints/              # MNIST checkpoints (BM, VP-Linear/Cosine/Exp)
 ├── color_digits_checkpoints/       # Unconditional SVHN checkpoints
@@ -38,6 +40,7 @@ proyecto_AAIII_02_diffusion_models/
 │
 ├── Figuras/                        # All output figures (referenced by the LaTeX report)
 ├── otras_pruebas/                  # Exploratory notebooks (not part of the deliverable)
+│   └── cat_AI_v2/                  # Cat dataset, images and exploration notebook
 └── tests/                          # Unit tests for diffusion_lib
 ```
 
@@ -64,6 +67,7 @@ Run in this order to regenerate all figures in `Figuras/`:
 | 2 | `fid_ve_vp.ipynb` | `fid_ve_vp_comparison.png` |
 | 3 | `samplers_vp_exp.ipynb` | `samplers_vp_exp_comparison.png` |
 | 4 | `conditional_and_imputation.ipynb` | `cfg_class_grid.png`, `cfg_ablation_w.png`, `cfg_process_comparison.png`, `imputation_masks.png`, `imputation_diversity.png` |
+| 5 | `cats_metrics.ipynb` *(after `train_cats.py` finishes)* | `cats_generation_comparison.png`, `cats_metrics_comparison.png` |
 
 ---
 

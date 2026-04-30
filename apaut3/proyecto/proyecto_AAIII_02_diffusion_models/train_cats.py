@@ -6,7 +6,7 @@ Dos fases de entrenamiento con checkpoints en escala logarítmica:
   · Fase 2 — lr=1e-4, 1500 épocas  (fine-tuning desde checkpoint final Fase 1)
 
 Ejecutar desde la carpeta raíz del proyecto:
-    python cat_AI_v2/train_cats.py
+    python train_cats.py
 """
 
 import sys
@@ -38,7 +38,7 @@ from diffusion_lib import (
 )
 
 # ── Config ────────────────────────────────────────────────────────────────────
-CAT_FOLDER = 'cat_AI_v2/cats'
+CAT_FOLDER = 'otras_pruebas/cat_AI_v2/cats'
 BATCH_SIZE = 256
 N_EPOCHS   = 1500
 
@@ -49,7 +49,7 @@ _log_ckpts = np.unique(
 )
 LOG_CHECKPOINTS = set(_log_ckpts.tolist()) | {N_EPOCHS}
 
-CKPT_DIR = Path('cat_AI_v2/checkpoints')
+CKPT_DIR = Path('otras_pruebas/cat_AI_v2/checkpoints')
 CKPT_DIR.mkdir(parents=True, exist_ok=True)
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
