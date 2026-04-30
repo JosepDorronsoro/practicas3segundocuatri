@@ -7,7 +7,7 @@ from .samplers.probability_flow_ode import ProbabilityFlowODESampler
 from .samplers.imputation import ImputationSampler
 from .model import GenerativeDiffusionModel
 from .metrics.bpd import compute_bpd
-from .score_models import BaseScoreModel, UNetScoreModel, CondUNetScoreModel, CFGWrapper
+from .score_models import BaseScoreModel, UNetScoreModel, UNetScoreModelColor, CondUNetScoreModel, CFGWrapper
 
 __all__ = [
     "VEProcess",
@@ -23,6 +23,7 @@ __all__ = [
     "compute_bpd",
     "BaseScoreModel",
     "UNetScoreModel",
+    "UNetScoreModelColor",
     "CondUNetScoreModel",
     "CFGWrapper",
 ]

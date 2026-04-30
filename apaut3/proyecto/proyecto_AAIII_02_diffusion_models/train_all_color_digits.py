@@ -34,8 +34,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, TensorDataset
 from torchvision.utils import make_grid
 
-from score_model_digits_color import ScoreNet as ScoreNetColor
 from diffusion_lib import (
+    UNetScoreModelColor as ScoreNetColor,
     VEProcess, VPProcess,
     LinearSchedule, CosineSchedule, ExponentialSchedule,
     EulerMaruyamaSampler, PredictorCorrectorSampler, ProbabilityFlowODESampler,

@@ -3,12 +3,15 @@
 
 from .base import BaseScoreModel
 from .unconditional import UNetScoreModel
+from .unconditional_color import UNetScoreModelColor
 from .conditional import CondUNetScoreModel
 from .cfg_wrapper import CFGWrapper
+
 
 __all__ = [
     "BaseScoreModel",
     "UNetScoreModel",
+    "UNetScoreModelColor",
     "CondUNetScoreModel",
     "CFGWrapper",
 ]

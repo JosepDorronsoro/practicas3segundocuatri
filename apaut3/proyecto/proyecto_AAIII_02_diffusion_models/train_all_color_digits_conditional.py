@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, TensorDataset
 from torchvision.utils import make_grid
 
-from score_model_digits_color import ScoreNet as ScoreNetColor
 from diffusion_lib import (
     VEProcess, VPProcess,
     LinearSchedule, CosineSchedule, ExponentialSchedule,
@@ -56,9 +55,7 @@ print(f'SVHN: {len(dataset)} images  |  shape {dataset[0][0].shape}')
 
 # ── Registries ────────────────────────────────────────────────────────────────
 PROCESSES = {
-    'VE-Brownian':    VEProcess(sigma=25.0),
-    'VP-Linear':      VPProcess(schedule=LinearSchedule()),
-    'VP-Cosine':      VPProcess(schedule=CosineSchedule()),
+
     'VP-Exponential': VPProcess(schedule=ExponentialSchedule()),
 }
 
