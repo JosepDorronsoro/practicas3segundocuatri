@@ -51,7 +51,7 @@ N_IMAGES    = 16         # images per permutation (displayed as 4x4 grid)
 IMG_SHAPE   = (3, 32, 32)
 DATA_PATH   = Path('digits_true_color_AI/data/train_32x32.mat')
 CKPT_DIR    = Path('color_digits_checkpoints')
-SAMPLES_DIR = Path('color_digits_samples')
+SAMPLES_DIR = Path('Figuras')
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
