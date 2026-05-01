@@ -22,7 +22,7 @@ proyecto_AAIII_02_diffusion_models/
 │
 ├── project_AAIII_teamCode_lastName1_lastName2.ipynb   # Main project notebook
 ├── fid_ve_vp.ipynb                 # FID comparison: VE vs VP schedules
-├── samplers_vp_exp.ipynb           # Sampler comparison on VP-Exponential
+├── samplers_vp_exp.ipynb           # Sampler comparison on VP-Cosine
 ├── conditional_and_imputation.ipynb # CFG conditional generation + inpainting
 ├── diffusion_lib_use_cases.ipynb   # API usage examples
 │
@@ -65,7 +65,7 @@ Run in this order to regenerate all figures in `Figuras/`:
 |---|----------|-----------------|
 | 1 | `project_AAIII_teamCode_lastName1_lastName2.ipynb` | training curves, generation grids, BPD table |
 | 2 | `fid_ve_vp.ipynb` | `fid_ve_vp_comparison.png` |
-| 3 | `samplers_vp_exp.ipynb` | `samplers_vp_exp_comparison.png` |
+| 3 | `samplers_vp_exp.ipynb` | `samplers_vp_cos_comparison.png` |
 | 4 | `conditional_and_imputation.ipynb` | `cfg_class_grid.png`, `cfg_ablation_w.png`, `cfg_process_comparison.png`, `imputation_masks.png`, `imputation_diversity.png` |
 | 5 | `cats_metrics.ipynb` *(after `train_cats.py` finishes)* | `cats_generation_comparison.png`, `cats_metrics_comparison.png` |
 

@@ -57,5 +57,5 @@ class VPProcess(DiffusionProcess):
     def log_prior(self, x_T, T=None):
         D = x_T[0].numel()
         log_norm = -0.5 * D * np.log(2 * np.pi)
-        log_exp = -0.5 * x_T.view(x_T.shape[0], -1).pow(2).sum(dim=1)
+        log_exp = -0.5 * x_T.reshape(x_T.shape[0], -1).pow(2).sum(dim=1)
         return log_norm + log_exp
