@@ -57,7 +57,7 @@ class VEProcess(DiffusionProcess):
         log_norm = -0.5 * D * np.log(2 * np.pi * sigma_T ** 2)
         log_exp = (
             -0.5
-            * x_T.view(x_T.shape[0], -1).pow(2).sum(dim=1)
+            * x_T.reshape(x_T.shape[0], -1).pow(2).sum(dim=1)
             / sigma_T ** 2
         )
         return log_norm + log_exp
