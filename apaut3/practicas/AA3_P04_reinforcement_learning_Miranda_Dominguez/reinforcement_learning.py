@@ -14,12 +14,17 @@ import numpy as np
 # [To-Do]: fill in how to select the action 
 def greedy_policy(Qtable, state):
     # Exploitation only: take the action with the highest (state, action) value
-    action = None
+    action = np.argmax(Qtable[state])
+
     return action 
 
 # [To-Do]: Define the epsilon-greedy policy
 def epsilon_greedy_policy(Qtable, state, epsilon, environment):
     action = None
+    if np.random.random() < epsilon:
+        action = environment.action_space.sample()
+    else:
+        action = np.argmax(Qtable[state])
     return action
 
 
@@ -55,13 +60,15 @@ def q_learning(
             n_steps += 1
 
             # Choose action (a) at state (s) using an epsilon-greedy policy
-      
+            action = epsilon_greedy_policy(Qtable, state, epsilon, environment)
             # Take the action (a) and observe the new state(s') and reward (r)
-
-            # Update Q-table and state
-            
+            new_state, reward, episode_over, truncated, info = environment.step(action)
+            # Update Q-table and state with bellman formuula
+            Qtable[state, action] = Qtable[state, action] + learning_rate * (
+                reward + gamma * np.max(Qtable[new_state]) - Qtable[state, action]
+            )
             # Determine whether the episode is over
-            
+            state = new_state
     return Qtable
 
 
@@ -77,4 +84,33 @@ def sarsa_learning(
     max_steps, 
     Qtable,
 ):
+    for episode in tqdm(range(n_training_episodes)):
+     
+        # Reduce epsilon (reduce exploration as learning progresses)
+        epsilon = ( 
+            min_epsilon 
+            + (max_epsilon - min_epsilon) * np.exp(-decay_rate*episode)
+        )
+        
+        # Reset the environment
+        state, info = environment.reset()
+        action = epsilon_greedy_policy(Qtable, state, epsilon, environment)
+        # Episode loop    
+        episode_over = False
+        n_steps = 0
+
+        while not episode_over and n_steps < max_steps:
+            n_steps += 1
+            new_state, reward, episode_over, truncated, info = environment.step(action)
+            # Choose action (a) at state (s) using an epsilon-greedy policy
+
+            next_action = epsilon_greedy_policy(Qtable, new_state, epsilon, environment)
+            
+            # Update Q-table and state with bellman formuula
+            Qtable[state, action] = Qtable[state, action] + learning_rate * (
+                reward + gamma * Qtable[new_state, next_action] - Qtable[state, action]
+            )
+            # Determine whether the episode is over
+            state = new_state
+            action = next_action
     return Qtable
