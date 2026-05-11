@@ -1,0 +1,17 @@
+[project]
+name = "aa3-p04-reinforcement-learning-miranda-dominguez"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "gymnasium>=1.3.0",
+    "imageio>=2.37.3",
+    "iprogress>=0.4",
+    "ipython>=9.13.0",
+    "ipywidgets>=8.1.8",
+    "matplotlib>=3.10.9",
+    "numpy>=2.4.4",
+    "pygame>=2.6.1",
+    "tqdm>=4.67.3",
+]
