@@ -62,13 +62,15 @@ def q_learning(
             # Choose action (a) at state (s) using an epsilon-greedy policy
             action = epsilon_greedy_policy(Qtable, state, epsilon, environment)
             # Take the action (a) and observe the new state(s') and reward (r)
-            new_state, reward, episode_over, truncated, info = environment.step(action)
+            new_state, reward, terminated, truncated, info = environment.step(action)
+            episode_over = terminated or truncated
             # Update Q-table and state with bellman formuula
             Qtable[state, action] = Qtable[state, action] + learning_rate * (
                 reward + gamma * np.max(Qtable[new_state]) - Qtable[state, action]
             )
             # Determine whether the episode is over
             state = new_state
+            
     return Qtable
 
 
@@ -101,7 +103,8 @@ def sarsa_learning(
 
         while not episode_over and n_steps < max_steps:
             n_steps += 1
-            new_state, reward, episode_over, truncated, info = environment.step(action)
+            new_state, reward, terminated, truncated, info = environment.step(action)
+            episode_over = terminated or truncated
             # Choose action (a) at state (s) using an epsilon-greedy policy
 
             next_action = epsilon_greedy_policy(Qtable, new_state, epsilon, environment)
@@ -113,4 +116,5 @@ def sarsa_learning(
             # Determine whether the episode is over
             state = new_state
             action = next_action
+            
     return Qtable
