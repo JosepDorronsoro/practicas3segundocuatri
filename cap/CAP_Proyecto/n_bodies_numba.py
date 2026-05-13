@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 from numba import njit, prange
 
 # --- 1. CONFIGURACIÓN FÍSICA Y PARÁMETROS ---
-N_BODIES = 100        # Número de cuerpos
+N_BODIES = 100      # Número de cuerpos
 G = 1.0               # Constante gravitacional (simplificada)
 SOFTENING = 0.1       # Parámetro de suavizado para evitar colisiones infinitas
 DT = 0.01             # Paso de tiempo (Delta t)
@@ -52,7 +52,7 @@ def symplectic_euler_step(pos, vel, acc, mass, dt):
     compute_accelerations(pos, mass, acc)
     
     n = pos.shape[0]
-    for i in range(n):
+    for i in prange(n):
         # 2. Actualizar velocidades (v = v + a*dt)
         vel[i, 0] += acc[i, 0] * dt
         vel[i, 1] += acc[i, 1] * dt
