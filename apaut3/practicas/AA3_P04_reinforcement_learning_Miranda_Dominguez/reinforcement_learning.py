@@ -11,12 +11,42 @@ import numpy as np
 
 
 def greedy_policy(Qtable, state):
-    # Exploitation only: take the action with the highest (state, action) value
+    """Select the action with the highest Q-value for the given state.
+
+    Implements a purely exploitative (greedy) policy: no randomness is
+    involved. Ties are broken by ``numpy.argmax``, which returns the
+    lowest-index maximiser.
+
+    Args:
+        Qtable (numpy.ndarray): Q-value table of shape
+            ``(n_states, n_actions)``.
+        state (int): Index of the current state.
+
+    Returns:
+        int: Index of the greedy action for ``state``.
+    """
     action = np.argmax(Qtable[state])
     return action
 
 
 def epsilon_greedy_policy(Qtable, state, epsilon, environment):
+    """Select an action using the epsilon-greedy exploration strategy.
+
+    With probability ``epsilon`` a random action is sampled from the
+    environment's action space (exploration); with probability
+    ``1 - epsilon`` the greedy action is chosen (exploitation).
+
+    Args:
+        Qtable (numpy.ndarray): Q-value table of shape
+            ``(n_states, n_actions)``.
+        state (int): Index of the current state.
+        epsilon (float): Exploration probability in ``[0, 1]``.
+        environment: A Gymnasium environment exposing
+            ``action_space.sample()``.
+
+    Returns:
+        int: Index of the selected action.
+    """
     if np.random.random() < epsilon:
         action = environment.action_space.sample()
     else:
@@ -35,6 +65,38 @@ def q_learning(
     decay_rate,
     Qtable,
 ):
+    """Train a Q-learning agent using an off-policy TD update rule.
+
+    At each step the Q-table is updated with the Bellman residual:
+
+        Q(s, a) ← Q(s, a) + α [r + γ max_{a'} Q(s', a') − Q(s, a)]
+
+    The behaviour policy is epsilon-greedy with exponential decay:
+
+        ε_t = ε_min + (ε_max − ε_min) · exp(−λ · t)
+
+    Args:
+        environment: A Gymnasium environment with a discrete observation
+            and action space.
+        n_training_episodes (int): Number of episodes to train for.
+        max_steps (int): Maximum number of steps allowed per episode.
+        learning_rate (float): Step size α ∈ (0, 1].
+        gamma (float): Discount factor γ ∈ [0, 1).
+        min_epsilon (float): Minimum exploration probability ε_min.
+        max_epsilon (float): Initial exploration probability ε_max.
+        decay_rate (float): Exponential decay rate λ > 0 for epsilon.
+        Qtable (numpy.ndarray): Initial Q-value table of shape
+            ``(n_states, n_actions)``. Modified in-place.
+
+    Returns:
+        tuple[numpy.ndarray, dict]: A pair ``(Qtable, metrics)`` where
+        ``Qtable`` is the trained Q-value table and ``metrics`` is a
+        dict with keys:
+
+        - ``'rewards'`` (list[float]): Total undiscounted reward per episode.
+        - ``'lengths'`` (list[int]): Number of steps per episode.
+        - ``'errors'`` (list[float]): Mean absolute TD error per episode.
+    """
     episode_rewards = []
     episode_lengths = []
     episode_errors = []
@@ -87,6 +149,43 @@ def sarsa_learning(
     max_steps,
     Qtable,
 ):
+    """Train a SARSA agent using an on-policy TD update rule.
+
+    At each step the Q-table is updated with the on-policy Bellman residual:
+
+        Q(s, a) ← Q(s, a) + α [r + γ Q(s', a') − Q(s, a)]
+
+    where ``a'`` is sampled from the same epsilon-greedy policy used for
+    acting. The first action of each episode is selected before entering
+    the step loop so that the ``(s, a, r, s', a')`` quintet is complete
+    at update time.
+
+    The behaviour policy uses exponential epsilon decay:
+
+        ε_t = ε_min + (ε_max − ε_min) · exp(−λ · t)
+
+    Args:
+        environment: A Gymnasium environment with a discrete observation
+            and action space.
+        n_training_episodes (int): Number of episodes to train for.
+        learning_rate (float): Step size α ∈ (0, 1].
+        gamma (float): Discount factor γ ∈ [0, 1).
+        min_epsilon (float): Minimum exploration probability ε_min.
+        max_epsilon (float): Initial exploration probability ε_max.
+        decay_rate (float): Exponential decay rate λ > 0 for epsilon.
+        max_steps (int): Maximum number of steps allowed per episode.
+        Qtable (numpy.ndarray): Initial Q-value table of shape
+            ``(n_states, n_actions)``. Modified in-place.
+
+    Returns:
+        tuple[numpy.ndarray, dict]: A pair ``(Qtable, metrics)`` where
+        ``Qtable`` is the trained Q-value table and ``metrics`` is a
+        dict with keys:
+
+        - ``'rewards'`` (list[float]): Total undiscounted reward per episode.
+        - ``'lengths'`` (list[int]): Number of steps per episode.
+        - ``'errors'`` (list[float]): Mean absolute TD error per episode.
+    """
     episode_rewards = []
     episode_lengths = []
     episode_errors = []
@@ -185,12 +284,17 @@ try:
         buffer_capacity=10000,
         target_update_freq=200,
         hidden_dim=128,
+        step_penalty=0.0,
     ):
         n_states = environment.observation_space.n
         n_actions = environment.action_space.n
+        grid_size = int(n_states ** 0.5)  # side length of the grid (8 for 8x8)
 
-        policy_net = QNetwork(n_states, n_actions, hidden_dim)
-        target_net = QNetwork(n_states, n_actions, hidden_dim)
+        # Use (row, col) normalised coordinates instead of one-hot.
+        # States close together in the grid have similar inputs, so the network
+        # can generalise across spatially neighbouring states.
+        policy_net = QNetwork(2, n_actions, hidden_dim)
+        target_net = QNetwork(2, n_actions, hidden_dim)
         target_net.load_state_dict(policy_net.state_dict())
         target_net.eval()
 
@@ -202,10 +306,13 @@ try:
         episode_errors = []
 
         def state_to_tensor(s):
-            """One-hot encode a discrete state index."""
-            one_hot = torch.zeros(n_states)
-            one_hot[s] = 1.0
-            return one_hot
+            """Encode state as normalised (row, col) coordinates in [0, 1]^2."""
+            row = s // grid_size
+            col = s % grid_size
+            return torch.tensor(
+                [row / (grid_size - 1), col / (grid_size - 1)],
+                dtype=torch.float32,
+            )
 
         for episode in tqdm(range(n_training_episodes)):
             epsilon = (
@@ -230,8 +337,13 @@ try:
 
                 new_state, reward, terminated, truncated, info = environment.step(action)
                 episode_over = terminated or truncated
-                buffer.push(state, action, reward, new_state, episode_over)
-                total_reward += reward
+                # Apply step penalty to every transition to create a dense reward
+                # signal: the agent is penalised for each step that is not the goal,
+                # encouraging shorter paths and providing learning signal even when
+                # the goal has not been reached.
+                shaped_reward = reward + step_penalty
+                buffer.push(state, action, shaped_reward, new_state, episode_over)
+                total_reward += reward  # track original reward for fair comparison with tabular methods
                 state = new_state
 
                 # Gradient step once the buffer has enough samples
@@ -283,13 +395,18 @@ try:
         frames = []
         state, info = environment.reset()
         done = False
+        grid_size = int(n_states ** 0.5)
 
         while not done:
             frames.append(environment.render())
-            one_hot = torch.zeros(n_states)
-            one_hot[state] = 1.0
+            row = state // grid_size
+            col = state % grid_size
+            coords = torch.tensor(
+                [row / (grid_size - 1), col / (grid_size - 1)],
+                dtype=torch.float32,
+            )
             with torch.no_grad():
-                action = policy_net(one_hot).argmax().item()
+                action = policy_net(coords).argmax().item()
             state, reward, terminated, truncated, info = environment.step(action)
             done = terminated or truncated
             if done:
